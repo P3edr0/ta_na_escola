@@ -1,0 +1,40 @@
+name: ta_na_escola
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  camera: ^0.11.3
+  crypto: ^3.0.7
+  dartz: ^0.10.1
+  dio: ^5.9.0
+  feather_icons: ^1.2.0
+  firebase_core: ^4.2.1
+  firebase_messaging: ^16.0.4
+  flutter:
+    sdk: flutter
+  flutter_image_compress: ^2.4.0
+  flutter_local_notifications: ^19.5.0
+  flutter_secure_storage: ^10.0.0
+  font_awesome_flutter: ^10.12.0
+  google_fonts: ^6.3.3
+  google_mlkit_face_detection: ^0.13.1
+  gradient_widgets_plus: ^1.0.0
+  image: ^4.5.4
+  mask_text_input_formatter: ^2.9.0
+  permission_handler: ^12.0.1
+  provider: ^6.1.5+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/

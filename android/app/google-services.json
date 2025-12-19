@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1000771912684",
+    "project_id": "tanaescola",
+    "storage_bucket": "tanaescola.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000771912684:android:8e23c8dfbc722cc9ad36c9",
+        "android_client_info": {
+          "package_name": "com.uzerpass.tanaescola"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYxX50ccE2WE5e1aWXonA1l-TvMjd-_-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
