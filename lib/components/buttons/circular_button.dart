@@ -8,12 +8,14 @@ class TneCircularButton extends StatefulWidget {
     required this.onTap,
     required this.size,
     required this.child,
+    this.gradient = primaryGradient,
     super.key,
   });
 
   final VoidCallback onTap;
   final double size;
   final Widget child;
+  final Gradient? gradient;
 
   @override
   State<TneCircularButton> createState() => _TneCircularButtonState();
@@ -30,7 +32,7 @@ class _TneCircularButtonState extends State<TneCircularButton> {
           height: Responsive.getSize(widget.size),
           width: Responsive.getSize(widget.size),
           alignment: Alignment.center,
-          decoration: const BoxDecoration(gradient: primaryGradient),
+          decoration: BoxDecoration(gradient: widget.gradient),
           child: widget.child,
         ),
       ),

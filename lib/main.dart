@@ -31,7 +31,7 @@ void main() async {
         navigatorObservers: [routeObserver],
         theme: TneAppTheme.lightTheme,
         themeMode: ThemeMode.light,
-        debugShowCheckedModeBanner: true,
+        debugShowCheckedModeBanner: false,
       ),
     ),
   );

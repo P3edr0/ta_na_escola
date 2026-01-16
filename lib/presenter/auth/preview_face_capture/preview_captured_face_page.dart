@@ -28,7 +28,7 @@ class PreviewCapturedFacePage extends StatefulWidget {
 }
 
 class PreviewCapturedFacePageState extends State<PreviewCapturedFacePage> {
-  final AppNavigator navigator = AppNavigator();
+  final AppNavigator _navigator = AppNavigator();
 
   @override
   void initState() {
@@ -87,7 +87,7 @@ class PreviewCapturedFacePageState extends State<PreviewCapturedFacePage> {
                   TneRoundedButton(
                     width: Responsive.getSize(200),
                     onTap: () {
-                      navigator.goto(TneRoutes.faceCapture, replace: true);
+                      _navigator.goto(TneRoutes.faceCapture, replace: true);
 
                       final controller = context.read<FaceCaptureController>();
                       controller.clearFile();
@@ -130,7 +130,7 @@ class PreviewCapturedFacePageState extends State<PreviewCapturedFacePage> {
               builder: (context, controller, child) => TneRoundedButton(
                 width: Responsive.getSize(250),
                 child: controller.loading
-                    ? const LoadingButton(color: secondaryColor)
+                    ? const TneLoadingButton(color: secondaryColor)
                     : Text(
                         "Finalizar",
                         textAlign: TextAlign.center,
@@ -166,7 +166,7 @@ class PreviewCapturedFacePageState extends State<PreviewCapturedFacePage> {
                       context,
                     );
                   }
-                  navigator.goto(TneRoutes.home, clearStack: true);
+                  _navigator.goto(TneRoutes.home, clearStack: true);
                 },
               ),
             ),

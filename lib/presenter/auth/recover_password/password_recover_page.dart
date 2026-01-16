@@ -137,7 +137,7 @@ class PasswordRecoverPageState extends State<PasswordRecoverPage> {
               width: 250,
               height: 50,
               child: controller.loading
-                  ? LoadingButton()
+                  ? TneLoadingButton()
                   : Text(
                       "Avançar",
                       textAlign: TextAlign.center,

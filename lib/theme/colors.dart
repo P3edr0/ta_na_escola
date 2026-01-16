@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 const primaryColor = Color.fromARGB(255, 0, 69, 35);
 const primaryFocusColor = Color.fromRGBO(0, 125, 68, 1);
+const alertColor = Color.fromRGBO(222, 52, 0, 1);
 const accentColor = Color.fromRGBO(29, 172, 16, 1);
 const secondaryColor = Colors.white;
 const black = Colors.black;
-const alertColor = Colors.red;
 
 const transparent = Colors.transparent;
 
@@ -13,6 +13,7 @@ const warning = Colors.amber;
 
 const veryDarkBlue = Color.fromRGBO(0, 13, 29, 1);
 const mediumDarkBlue = Color.fromRGBO(0, 31, 59, 1);
+const blueGrey = Color.fromRGBO(94, 106, 130, 1);
 const grey = Color.fromRGBO(0, 0, 0, 0.6);
 const mediumGrey = Color.fromRGBO(0, 0, 0, 0.25);
 const lightGrey = Color.fromRGBO(0, 0, 0, 0.1);

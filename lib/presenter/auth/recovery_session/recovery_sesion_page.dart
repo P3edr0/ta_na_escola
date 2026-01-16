@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:ta_na_escola/components/avatar/avatar_border.dart';
 import 'package:ta_na_escola/components/buttons/back_button.dart';
 import 'package:ta_na_escola/presenter/core/store/core_controller.dart';
-import 'package:ta_na_escola/presenter/home/home_page.dart';
 import 'package:ta_na_escola/shared/utils/app_assets.dart';
 import 'package:ta_na_escola/shared/utils/routes/app_routes.dart';
 
 import '../../../components/loadings/loading_button.dart';
 import '../../../responsiveness/responsive.dart';
+import '../../../shared/utils/routes/app_navigator.dart';
 import '../../../theme/colors.dart';
 import '../credential/controller/controller.dart';
 import 'widgets/keyboard.dart';
@@ -91,7 +91,7 @@ class RecoverySessionPageState extends State<RecoverySessionPage> {
                                 ? CircleAvatar(
                                     backgroundColor: primaryFocusColor,
                                     radius: Responsive.getSize(50),
-                                    child: const LoadingButton(
+                                    child: const TneLoadingButton(
                                       color: secondaryColor,
                                     ),
                                   )
@@ -99,6 +99,7 @@ class RecoverySessionPageState extends State<RecoverySessionPage> {
                                     child: TneAvatarBorder(
                                       radius: 50,
                                       image: NetworkImage(session.image!),
+                                      color: accentColor,
                                     ),
                                   ),
                             const Spacer(),
@@ -110,6 +111,8 @@ class RecoverySessionPageState extends State<RecoverySessionPage> {
                   TneBackButton(
                     onTap: () async {
                       final controller = context.read<CoreController>();
+                      final AppNavigator navigator = AppNavigator();
+
                       unawaited(controller.deleteSession());
                       navigator.goto(TneRoutes.credential, replace: true);
                     },

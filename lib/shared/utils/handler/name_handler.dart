@@ -3,4 +3,13 @@ class NameHandler {
     final firstName = fullName.split(' ').first;
     return firstName;
   }
+
+  static String surname(String fullName) {
+    final names = fullName.split(' ');
+    if (names.length < 2) {
+      return fullName;
+    }
+    final surname = '${names.first} ${names[1]}';
+    return surname;
+  }
 }

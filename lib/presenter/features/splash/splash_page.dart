@@ -65,7 +65,7 @@ class _SplashPageState extends State<SplashPage> {
                   fit: BoxFit.cover,
                   height: size.height,
                 ),
-                Center(child: LoadingButton(size: 70)),
+                Center(child: TneLoadingButton(size: 70)),
               ],
             ),
           ),

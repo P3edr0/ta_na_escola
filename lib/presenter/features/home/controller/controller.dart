@@ -38,8 +38,10 @@ class HomeController extends ChangeNotifier {
       },
       (newStudents) {
         students = [...newStudents];
-        setSelectedStudent(students.first);
-        setLoading();
+        if (students.isNotEmpty) {
+          setSelectedStudent(students.first);
+          setLoading();
+        }
       },
     );
   }

@@ -64,12 +64,12 @@ class RecoverPasswordController extends ChangeNotifier {
     final comparativeYear = yearController.text;
     final comparativeDate =
         '$comparativeYear-$comparativeMonth-$comparativeDay';
-    final handledBirthDay = JackDateFormat.birthDayFormatter(
+    final handledBirthDay = TneDateFormat.birthDayFormatter(
       birthDate,
       '-',
       true,
     );
-    final handledComparativeDate = JackDateFormat.birthDayFormatter(
+    final handledComparativeDate = TneDateFormat.birthDayFormatter(
       comparativeDate,
       '-',
       true,

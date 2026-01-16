@@ -30,7 +30,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     super.initState();
   }
 
-  final AppNavigator navigator = AppNavigator();
+  final AppNavigator _navigator = AppNavigator();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +142,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 width: 250,
                 height: 50,
                 child: controller.loading
-                    ? LoadingButton()
+                    ? TneLoadingButton()
                     : Text(
                         "Confirmar",
                         textAlign: TextAlign.center,
@@ -187,16 +187,16 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                     );
 
                     if (loginController.hasError) {
-                      navigator.goto(TneRoutes.credential, clearStack: true);
+                      _navigator.goto(TneRoutes.credential, clearStack: true);
                       return;
                     }
                     if (credentialController
                         .credentialStatus!
                         .isWithoutFaceId) {
-                      navigator.goto(TneRoutes.preFaceCapture);
+                      _navigator.goto(TneRoutes.preFaceCapture);
                       return;
                     }
-                    navigator.goto(TneRoutes.home, clearStack: true);
+                    _navigator.goto(TneRoutes.home, clearStack: true);
                   }
                 },
               ),
