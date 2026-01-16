@@ -4,6 +4,7 @@ class StudentEntity {
 
   final String name;
   final String? schoolYear;
+  final String? schoolId;
   final int age;
   final String? image;
   final String? schoolName;
@@ -14,6 +15,7 @@ class StudentEntity {
     required this.name,
     required this.age,
     this.image,
+    this.schoolId,
     required this.schoolName,
     this.schoolYear,
     this.schoolImage,

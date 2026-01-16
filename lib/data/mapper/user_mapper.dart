@@ -17,7 +17,7 @@ class UserMapper {
 
   static fromJson(Map<String, dynamic> data) {
     final bornDate = data['dados']['dataNascimento'] != null
-        ? JackDateFormat.birthDayFormatter(data['dados']['dataNascimento'])
+        ? TneDateFormat.birthDayFormatter(data['dados']['dataNascimento'])
         : null;
     final tokenExpireAt = data['expiraEm'] != null
         ? DateTime.parse(data['expiraEm'])

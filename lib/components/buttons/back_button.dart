@@ -5,8 +5,11 @@ import '../../responsiveness/responsive.dart';
 import '../../theme/colors.dart';
 
 class TneBackButton extends StatelessWidget {
-  const TneBackButton({super.key, this.onTap});
+  const TneBackButton({super.key, this.onTap}) : isTransparent = false;
+  const TneBackButton.transparent({super.key, this.onTap})
+    : isTransparent = true;
   final void Function()? onTap;
+  final bool isTransparent;
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -14,6 +17,8 @@ class TneBackButton extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(top: 10.0, left: Responsive.getSize(20)),
         child: TneCircularButton(
+          gradient: isTransparent ? null : primaryGradient,
+
           onTap: () async {
             if (onTap != null) {
               onTap!();

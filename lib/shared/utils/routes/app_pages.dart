@@ -10,9 +10,13 @@ import 'package:ta_na_escola/presenter/auth/recover_password/password_recover_em
 import 'package:ta_na_escola/presenter/auth/recover_password/password_recover_page.dart';
 import 'package:ta_na_escola/presenter/auth/recovery_session/recovery_sesion_page.dart';
 import 'package:ta_na_escola/presenter/auth/without_account/without_account_page.dart';
+import 'package:ta_na_escola/presenter/features/frequency/pages/fault/fault_page.dart';
+import 'package:ta_na_escola/presenter/features/frequency/pages/frequency/frequency_page.dart';
+import 'package:ta_na_escola/presenter/features/home/home_page.dart';
+import 'package:ta_na_escola/presenter/features/notification/notification_page.dart';
 import 'package:ta_na_escola/presenter/features/splash/splash_page.dart';
-import 'package:ta_na_escola/presenter/home/home_page.dart';
 
+import '../../../presenter/features/notification/notification_details_page.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -42,8 +46,16 @@ class AppPages {
         return MaterialPageRoute(builder: (_) => PasswordRecoverEmailPage());
       case == TneRoutes.passwordRecoverHelp:
         return MaterialPageRoute(builder: (_) => HelpPage());
+      case == TneRoutes.frequency:
+        return MaterialPageRoute(builder: (_) => FrequencyPage());
       case == TneRoutes.recoverSession:
         return MaterialPageRoute(builder: (_) => RecoverySessionPage());
+      case == TneRoutes.fault:
+        return MaterialPageRoute(builder: (_) => FaultPage());
+      case == TneRoutes.notification:
+        return MaterialPageRoute(builder: (_) => NotificationPage());
+      case == TneRoutes.notificationDetails:
+        return MaterialPageRoute(builder: (_) => NotificationDetailsPage());
 
       default:
         return MaterialPageRoute(

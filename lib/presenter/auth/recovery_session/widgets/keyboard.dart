@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ta_na_escola/presenter/auth/credential/credential_page.dart';
 import 'package:ta_na_escola/responsiveness/leg_font_style.dart';
 import 'package:ta_na_escola/shared/utils/routes/app_navigator.dart';
 import 'package:ta_na_escola/shared/utils/routes/app_routes.dart';
@@ -93,6 +92,7 @@ class KeyboardButton extends StatefulWidget {
 
 class _KeyboardButtonState extends State<KeyboardButton> {
   bool taped = false;
+  final AppNavigator _navigator = AppNavigator();
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
               } else {
                 controller.clearRecovererPasswordContent();
 
-                navigator.goto(TneRoutes.home, clearStack: true);
+                _navigator.goto(TneRoutes.home, clearStack: true);
               }
             } else {
               controller.setRecoverPassword(widget.value, true);
@@ -135,7 +135,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
                 if (context.mounted) {
                   controller.clearRecovererPasswordContent();
 
-                  navigator.goto(TneRoutes.home, clearStack: true);
+                  _navigator.goto(TneRoutes.home, clearStack: true);
                 }
               }
             }

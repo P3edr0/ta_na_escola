@@ -23,7 +23,7 @@ class CredentialPage extends StatefulWidget {
 }
 
 final bool isLoading = false;
-final AppNavigator navigator = AppNavigator();
+final AppNavigator _navigator = AppNavigator();
 
 class CredentialPageState extends State<CredentialPage> {
   @override
@@ -137,7 +137,7 @@ class CredentialPageState extends State<CredentialPage> {
                                       if (controller
                                           .credentialStatus!
                                           .isWithoutPassword) {
-                                        navigator.goto(
+                                        _navigator.goto(
                                           TneRoutes.createPassword,
                                         );
 
@@ -147,17 +147,19 @@ class CredentialPageState extends State<CredentialPage> {
                                       if (controller
                                           .credentialStatus!
                                           .isWithoutAccount) {
-                                        navigator.goto(
+                                        _navigator.goto(
                                           TneRoutes.withoutAccount,
                                         );
 
                                         return;
                                       }
 
-                                      navigator.goto(TneRoutes.login);
+                                      _navigator.goto(TneRoutes.login);
                                     },
                                     child: controller.loading
-                                        ? LoadingButton(color: secondaryColor)
+                                        ? TneLoadingButton(
+                                            color: secondaryColor,
+                                          )
                                         : Text(
                                             'Entrar',
                                             style: TneFontStyle.bodyLargeSec

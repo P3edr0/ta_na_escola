@@ -3,8 +3,12 @@ import 'package:ta_na_escola/theme/colors.dart';
 
 import '../../responsiveness/responsive.dart';
 
-class LoadingButton extends StatelessWidget {
-  const LoadingButton({super.key, this.color = secondaryColor, this.size = 30});
+class TneLoadingButton extends StatelessWidget {
+  const TneLoadingButton({
+    super.key,
+    this.color = secondaryColor,
+    this.size = 30,
+  });
   final Color? color;
   final double size;
   @override

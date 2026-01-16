@@ -26,9 +26,12 @@ class TneTextfield extends StatefulWidget {
     this.maxLength,
     this.radius = 10,
     this.maxLines = 1,
+    this.alignment = Alignment.center,
+    this.padding = EdgeInsets.zero,
   });
   final TextEditingController controller;
   final String hint;
+  final AlignmentGeometry alignment;
   final Widget? suffix;
   final FormFieldValidator? validator;
   final String? label;
@@ -43,6 +46,7 @@ class TneTextfield extends StatefulWidget {
   final List<TextInputFormatter>? formatter;
   final Function(String)? onChanged;
   final Function()? onEditingComplete;
+  final EdgeInsets padding;
 
   final Function(String value)? onFieldSubmitted;
 
@@ -100,7 +104,8 @@ class _TneTextfieldState extends State<TneTextfield> {
           SizedBox(height: Responsive.getSize(10)),
         ],
         Container(
-          alignment: Alignment.center,
+          alignment: widget.alignment,
+          padding: widget.padding,
           height: Responsive.getSize(56.0 * widget.maxLines!),
           decoration: BoxDecoration(
             color: lightGrey,

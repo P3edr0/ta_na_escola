@@ -15,16 +15,19 @@ import 'package:ta_na_escola/presenter/auth/login/controller/login_controller.da
 import 'package:ta_na_escola/presenter/auth/preview_face_capture/controller/preview_capturered_face_controller.dart';
 import 'package:ta_na_escola/presenter/auth/recover_password/store/recover_password_controller.dart';
 import 'package:ta_na_escola/presenter/core/store/core_controller.dart';
-import 'package:ta_na_escola/presenter/home/controller/controller.dart';
+import 'package:ta_na_escola/presenter/features/frequency/store/controller.dart';
+import 'package:ta_na_escola/presenter/features/home/controller/controller.dart';
+import 'package:ta_na_escola/presenter/features/notification/store/controller.dart';
 
 import '../../data/base_datasource/auth/create_face_id_datasource.dart';
 import '../../data/base_datasource/auth/create_password_datasource.dart';
 import '../../data/base_datasource/auth/login_datasource.dart';
 import '../../data/base_datasource/auth/recover_password_datasource.dart';
+import '../../data/base_datasource/notification/notification_datasource.dart';
 import '../../data/base_datasource/session/create_session.dart';
 import '../../data/base_datasource/session/delete_session.dart';
 import '../../data/base_datasource/session/get_session.dart';
-import '../../data/base_datasource/student/fetch_student_datasource.dart';
+import '../../data/base_datasource/student/student_datasource.dart';
 import '../../data/datasources/auth/create_face_id_datasource_impl.dart';
 import '../../data/datasources/auth/create_password_datasource_impl.dart';
 import '../../data/datasources/auth/login_datasource_impl.dart';
@@ -32,18 +35,30 @@ import '../../data/datasources/auth/recover_password_datasource_impl.dart';
 import '../../data/datasources/local/secure_storage/session/create_session.dart';
 import '../../data/datasources/local/secure_storage/session/delete_session.dart';
 import '../../data/datasources/local/secure_storage/session/get_session.dart';
+import '../../data/datasources/notification/get_notification_categories_datasource.dart';
+import '../../data/datasources/notification/get_notifications_by_category_datasource.dart';
+import '../../data/datasources/notification/update_notification_status_datasource.dart';
 import '../../data/datasources/student/fetch_student_datasource.dart';
+import '../../data/datasources/student/get_filtered_frequency_datasource.dart';
+import '../../data/datasources/student/get_frequency_datasource.dart';
+import '../../data/repository/notification/notification_repository_impl.dart';
 import '../../data/repository/session/create_session_repository_impl.dart';
 import '../../data/repository/session/delete_session_repository_impl.dart';
 import '../../data/repository/session/get_session_repository_impl.dart';
-import '../../data/repository/student/fetch_student_repository_impl.dart';
+import '../../data/repository/student/student_repository_impl.dart';
 import '../../presenter/auth/create_password/controller/create_password_controller.dart';
 import '../../presenter/auth/credential/controller/controller.dart';
 import '../../shared/utils/routes/route_observer.dart';
+import '../repository/notification/notification_repository.dart';
 import '../usecases/auth/create_face_id_usecase.dart';
 import '../usecases/auth/recover_password_usecase.dart';
+import '../usecases/notification/get_notification_categories_usecase.dart';
+import '../usecases/notification/get_notifications_by_category_usecase.dart';
+import '../usecases/notification/update_notification_status_usecase .dart';
 import '../usecases/session/create_session_usecase.dart';
 import '../usecases/session/delete_session_usecase.dart';
+import '../usecases/student/get_filtered_frequency_usecase.dart';
+import '../usecases/student/get_frequency_usecase.dart';
 
 class Providers {
   static final providers = [
@@ -196,6 +211,75 @@ class Providers {
       create: (ctx) => HomeController(
         fetchStudentUsecase: FetchStudentUsecase(
           repository: ctx.read<IFetchStudentRepository>(),
+        ),
+      ),
+    ),
+
+    // FREQUENCY /////////
+    Provider<IGetFrequencyDatasource>(
+      create: (ctx) => GetFrequencyDatasourceImpl(),
+    ),
+    Provider<IGetFrequencyRepository>(
+      create: (ctx) => GetFrequencyRepositoryImpl(
+        datasource: ctx.read<IGetFrequencyDatasource>(),
+      ),
+    ),
+    Provider<IGetFilteredFrequencyDatasource>(
+      create: (ctx) => GetFilteredFrequencyDatasourceImpl(),
+    ),
+    Provider<IGetFilteredFrequencyRepository>(
+      create: (ctx) => GetFilteredFrequencyRepositoryImpl(
+        datasource: ctx.read<IGetFilteredFrequencyDatasource>(),
+      ),
+    ),
+    ChangeNotifierProvider<FrequencyController>(
+      create: (ctx) => FrequencyController(
+        getFrequencyUsecase: GetFrequencyUsecase(
+          repository: ctx.read<IGetFrequencyRepository>(),
+        ),
+        getFilteredFrequencyUsecase: GetFilteredFrequencyUsecase(
+          repository: ctx.read<IGetFilteredFrequencyRepository>(),
+        ),
+      ),
+    ),
+
+    // NOTIFICATIONS /////////
+    Provider<IGetNotificationsByCategoryDatasource>(
+      create: (ctx) => GetNotificationsByCategoryDatasourceImpl(),
+    ),
+    Provider<IGetNotificationsByCategoryRepository>(
+      create: (ctx) => GetNotificationsByCategoryRepositoryImpl(
+        datasource: ctx.read<IGetNotificationsByCategoryDatasource>(),
+      ),
+    ),
+    // NOTIFICATIONS /////////
+    Provider<IGetNotificationCategoriesDatasource>(
+      create: (ctx) => GetNotificationCategoriesDatasourceImpl(),
+    ),
+    Provider<IGetNotificationCategoriesRepository>(
+      create: (ctx) => GetNotificationCategoriesRepositoryImpl(
+        datasource: ctx.read<IGetNotificationCategoriesDatasource>(),
+      ),
+    ),
+    // NOTIFICATIONS /////////
+    Provider<IUpdateNotificationStatusDatasource>(
+      create: (ctx) => UpdateNotificationStatusDatasourceImpl(),
+    ),
+    Provider<IUpdateNotificationStatusRepository>(
+      create: (ctx) => UpdateNotificationStatusRepositoryImpl(
+        datasource: ctx.read<IUpdateNotificationStatusDatasource>(),
+      ),
+    ),
+    ChangeNotifierProvider<NotificationController>(
+      create: (ctx) => NotificationController(
+        getNotificationCategoriesUsecase: GetNotificationCategoriesUsecase(
+          repository: ctx.read<IGetNotificationCategoriesRepository>(),
+        ),
+        getNotificationsByCategoryUsecase: GetNotificationsByCategoryUsecase(
+          repository: ctx.read<IGetNotificationsByCategoryRepository>(),
+        ),
+        updateNotificationStatusUsecase: UpdateNotificationStatusUsecase(
+          repository: ctx.read<IUpdateNotificationStatusRepository>(),
         ),
       ),
     ),

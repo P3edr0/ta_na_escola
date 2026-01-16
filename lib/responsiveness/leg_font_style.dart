@@ -78,32 +78,32 @@ abstract class TneFontStyle {
 
   //////////////////////// SECONDARY FONT STYLE ////////////////////////
 
-  static TextStyle h3Sec = GoogleFonts.roboto().copyWith(
+  static TextStyle h3Sec = GoogleFonts.sora().copyWith(
     fontSize: Responsive.getFontValue(22),
     color: Colors.black,
   );
-  static TextStyle h4Sec = GoogleFonts.roboto().copyWith(
+  static TextStyle h4Sec = GoogleFonts.sora().copyWith(
     fontSize: Responsive.getFontValue(20),
     color: Colors.black,
   );
 
-  static TextStyle titleSec = GoogleFonts.roboto().copyWith(
+  static TextStyle titleSec = GoogleFonts.sora().copyWith(
     fontSize: Responsive.getFontValue(18),
     color: Colors.black,
   );
-  static TextStyle bodyLargeSec = GoogleFonts.roboto().copyWith(
+  static TextStyle bodyLargeSec = GoogleFonts.sora().copyWith(
     fontSize: Responsive.getFontValue(16),
     color: Colors.black,
   );
-  static TextStyle bodySec = GoogleFonts.roboto().copyWith(
+  static TextStyle bodySec = GoogleFonts.sora().copyWith(
     fontSize: Responsive.getFontValue(14),
     color: Colors.black,
   );
-  static TextStyle smallSec = GoogleFonts.roboto().copyWith(
+  static TextStyle smallSec = GoogleFonts.sora().copyWith(
     fontSize: Responsive.getFontValue(12),
     color: Colors.black,
   );
-  static TextStyle verySmallSec = GoogleFonts.roboto().copyWith(
+  static TextStyle verySmallSec = GoogleFonts.sora().copyWith(
     fontSize: Responsive.getFontValue(10),
     color: Colors.black,
   );

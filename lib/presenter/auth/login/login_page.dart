@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  final AppNavigator navigator = AppNavigator();
+  final AppNavigator _navigator = AppNavigator();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     SizedBox(height: Responsive.getSize(10)),
                     InkWell(
-                      onTap: () => navigator.goto(TneRoutes.passwordRecover),
+                      onTap: () => _navigator.goto(TneRoutes.passwordRecover),
                       child: Text(
                         'Esqueceu a senha?',
                         style: TneFontStyle.bodyLargeSec.copyWith(
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 250,
                 height: 50,
                 child: controller.loading
-                    ? LoadingButton()
+                    ? TneLoadingButton()
                     : Text(
                         "Confirmar",
                         textAlign: TextAlign.center,
@@ -142,10 +142,10 @@ class _LoginPageState extends State<LoginPage> {
                   final credentialStatus =
                       credentialController.credentialStatus;
                   if (credentialStatus!.isWithoutFaceId) {
-                    navigator.goto(TneRoutes.preFaceCapture);
+                    _navigator.goto(TneRoutes.preFaceCapture);
                     return;
                   }
-                  navigator.goto(TneRoutes.home, clearStack: true);
+                  _navigator.goto(TneRoutes.home, clearStack: true);
                 },
               ),
             ),

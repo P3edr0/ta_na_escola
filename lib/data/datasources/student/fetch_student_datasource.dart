@@ -7,7 +7,7 @@ import 'package:ta_na_escola/domain/entities/student_entity.dart';
 import 'package:ta_na_escola/shared/framework/jack_environment.dart';
 
 import '../../../domain/exceptions/auth_exceptions.dart';
-import '../../base_datasource/student/fetch_student_datasource.dart';
+import '../../base_datasource/student/student_datasource.dart';
 
 class FetchStudentDatasourceImpl implements IFetchStudentDatasource {
   @override

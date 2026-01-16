@@ -5,16 +5,15 @@ import 'package:ta_na_escola/components/avatar/avatar.dart';
 import 'package:ta_na_escola/components/loadings/loading.dart';
 import 'package:ta_na_escola/domain/entities/user_entity.dart';
 import 'package:ta_na_escola/presenter/auth/login/controller/login_controller.dart';
-import 'package:ta_na_escola/presenter/home/controller/controller.dart';
+import 'package:ta_na_escola/presenter/features/home/controller/controller.dart';
 import 'package:ta_na_escola/responsiveness/leg_font_style.dart';
 import 'package:ta_na_escola/shared/utils/app_assets.dart';
 import 'package:ta_na_escola/shared/utils/handler/name_handler.dart';
 
-import '../../../responsiveness/responsive.dart';
-import '../../../shared/utils/routes/app_navigator.dart';
-import '../../../theme/colors.dart';
-import '../../components/avatar/avatar_border.dart';
-import '../../components/dialogs/quit_app_dialog.dart';
+import '../../../../responsiveness/responsive.dart';
+import '../../../../theme/colors.dart';
+import '../../../components/avatar/avatar_border.dart';
+import '../../../components/dialogs/quit_app_dialog.dart';
 import 'widgets/home_card_collection.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,8 +21,6 @@ class HomePage extends StatefulWidget {
   @override
   HomePageState createState() => HomePageState();
 }
-
-final AppNavigator navigator = AppNavigator();
 
 class HomePageState extends State<HomePage> {
   @override
@@ -39,6 +36,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Apenas testando");
     return Scaffold(
       backgroundColor: black,
       body: PopScope(
@@ -208,6 +206,7 @@ class HomePageState extends State<HomePage> {
                                       image: NetworkImage(student.image ?? ''),
                                       radius: 40,
                                       hasBottomPadding: true,
+                                      color: accentColor,
                                     ),
                                   );
                                 }
