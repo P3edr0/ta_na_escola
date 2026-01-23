@@ -5,10 +5,15 @@ import '../../responsiveness/responsive.dart';
 import '../../theme/colors.dart';
 
 class TneBadge extends StatelessWidget {
-  const TneBadge({super.key, required this.label});
+  const TneBadge({super.key, required this.label}) : isSecondary = false;
+  const TneBadge.secondary({super.key, required this.label})
+    : isSecondary = true;
   final String label;
+  final bool isSecondary;
   @override
   Widget build(BuildContext context) {
+    final handledColor = isSecondary ? alertColor : primaryFocusColor;
+    final handledSecColor = isSecondary ? alertColor : primaryColor;
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: Responsive.getSize(12),
@@ -17,11 +22,11 @@ class TneBadge extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
 
-        color: primaryFocusColor.withValues(alpha: 0.1),
+        color: handledColor.withValues(alpha: 0.1),
       ),
       child: Text(
         label,
-        style: TneFontStyle.smallSec.copyWith(color: primaryColor),
+        style: TneFontStyle.smallSec.copyWith(color: handledSecColor),
       ),
     );
   }

@@ -10,7 +10,7 @@ class FrequencyMapper {
     DateTime? exitTime;
     String? handledEntryTime;
     String? handledExitTime;
-
+    bool didHaveClass = false;
     try {
       day = DateTime.tryParse(data['dia'].toString());
     } catch (e) {
@@ -20,20 +20,28 @@ class FrequencyMapper {
 
     for (var i = 0; i < times.length; i++) {
       if (i == 0) {
-        entryTime = DateTime.tryParse(times[i]['dataHoraPassagem'].toString());
+        entryTime = DateTime.tryParse(
+          times[i]['dataHoraPassagem'].toString(),
+        )!.subtract(Duration(hours: 6));
         handledEntryTime =
-            '${entryTime!.hour}:${TneValueHandler.smallNumberToShow(entryTime.minute)}';
+            '${entryTime.hour}:${TneValueHandler.smallNumberToShow(entryTime.minute)}';
       }
       if (i == 1) {
-        exitTime = DateTime.tryParse(times[i]['dataHoraPassagem'].toString());
+        exitTime = DateTime.tryParse(
+          times[i]['dataHoraPassagem'].toString(),
+        )!.subtract(Duration(hours: 6));
         handledExitTime =
-            '${exitTime!.hour}:${TneValueHandler.smallNumberToShow(exitTime.minute)}';
+            '${exitTime.hour}:${TneValueHandler.smallNumberToShow(exitTime.minute)}';
       }
+    }
+    if (data['aulaRealizada'] != null) {
+      didHaveClass = data['aulaRealizada'];
     }
     return FrequencyEntity(
       day: day!,
       entryTime: handledEntryTime,
       exitTime: handledExitTime,
+      didHaveClass: didHaveClass,
     );
   }
 }

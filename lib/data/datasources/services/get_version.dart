@@ -1,40 +1,34 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:ta_na_escola/data/base_datasource/services/get_version.dart';
+import 'package:ta_na_escola/data/mapper/version_mapper.dart';
+import 'package:ta_na_escola/domain/entities/version_entity.dart';
 
-import '../../../domain/entities/data_notification_entity.dart';
-import '../../../domain/entities/notification_entity.dart';
-import '../../../domain/exceptions/auth_exceptions.dart';
+import '../../../../../domain/exceptions/auth_exceptions.dart';
 import '../../../shared/framework/jack_environment.dart';
-import '../../base_datasource/notification/notification_datasource.dart';
-import '../../mapper/notification_mapper.dart';
 
-class GetNotificationsByCategoryDatasourceImpl
-    implements IGetNotificationsByCategoryDatasource {
+class GetVersionDatasourceImpl implements IGetVersionDatasource {
   @override
-  Future<Either<ITneExceptions, List<NotificationEntity>>> call(
-    DataNotificationEntity data,
-  ) async {
+  Future<Either<ITneExceptions, VersionEntity>> call() async {
     final dio = Dio();
 
     try {
       final response = await dio.get(
-        '${TneEnvironment.apiUrl}notificacoes/listar-por-aluno/${data.studentId}?Pagina=${data.page}&TamanhoPagina=20',
+        '${TneEnvironment.apiUrl}versoes',
         options: Options(
           headers: {
             "accept": "text/plain",
-            "Authorization": "Bearer ${data.token}",
+            "x-app-api-key": " ${TneEnvironment.apiKey}",
           },
         ),
       );
 
       if (response.statusCode == 200) {
-        final listData = List<Map<String, dynamic>>.from(response.data['data']);
-        final notifications = listData
-            .map((notification) => NotificationMapper.fromMap(notification))
-            .toList();
-        return Right(notifications);
+        final version = VersionMapper.fromJson(response.data);
+        return Right(version);
       } else {
         log('Erro: ${response.statusMessage}/n Code:${response.statusCode}');
         return Left(

@@ -32,6 +32,7 @@ class _NotificationPageState extends State<NotificationPage> {
       final controller = context.read<NotificationController>();
       final user = loginController.user!;
       final student = homeController.selectedStudent!;
+
       final data = DataNotificationEntity(
         studentId: student.guardianId,
         fcmId: 'firebase_token',

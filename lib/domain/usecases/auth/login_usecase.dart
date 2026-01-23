@@ -10,12 +10,15 @@ class LoginUsecase {
   Future<Either<ITneExceptions, UserEntity>> call({
     required String credential,
     required String password,
-    String? notifyToken,
+    required String notifyToken,
   }) async {
     if (credential.trim().isEmpty) {
       return Left(DataException(message: 'Credencial inválida.'));
     }
     if (password.trim().isEmpty) {
+      return Left(DataException(message: 'Senha inválida.'));
+    }
+    if (notifyToken.trim().isEmpty) {
       return Left(DataException(message: 'Senha inválida.'));
     }
 

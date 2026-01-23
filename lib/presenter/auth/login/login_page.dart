@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                   final credential = credentialController.refinedCredential!;
                   await controller.login(
                     credential: credential,
-                    notifyToken: token,
+                    notifyToken: token!,
                   );
 
                   if (controller.hasError && context.mounted) {

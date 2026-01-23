@@ -9,6 +9,7 @@ import 'package:ta_na_escola/theme/colors.dart';
 
 import '../../../../components/dialogs/error_dialog.dart';
 import '../../../../responsiveness/responsive.dart';
+import '../../../../services/notification_service.dart';
 import '../../../core/store/core_controller.dart';
 
 class Keyboard extends StatelessWidget {
@@ -93,6 +94,7 @@ class KeyboardButton extends StatefulWidget {
 class _KeyboardButtonState extends State<KeyboardButton> {
   bool taped = false;
   final AppNavigator _navigator = AppNavigator();
+  final notifyService = FirebaseNotificationService();
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +108,10 @@ class _KeyboardButtonState extends State<KeyboardButton> {
           final controller = context.read<CoreController>();
           if (haveIcon) {
             if (widget.value == 'done') {
-              final response = await controller.loginSession();
+              final token = await notifyService.getToken();
+              final response = await controller.loginSession(
+                notifyToken: token!,
+              );
               if (response != null) {
                 ErrorDialog.show(
                   "Falha ao fazer login",
@@ -124,7 +129,10 @@ class _KeyboardButtonState extends State<KeyboardButton> {
           } else {
             final length = controller.setRecoverPassword(widget.value);
             if (length == 6) {
-              final response = await controller.loginSession();
+              final token = await notifyService.getToken();
+              final response = await controller.loginSession(
+                notifyToken: token!,
+              );
               if (response != null) {
                 ErrorDialog.show(
                   "Falha ao fazer login",

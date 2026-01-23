@@ -73,14 +73,18 @@ class CoreController extends ChangeNotifier {
     );
   }
 
-  Future<String?> loginSession() async {
+  Future<String?> loginSession({required String notifyToken}) async {
     if (recovererPasswordContent != currentSession!.password) {
       return 'Senha inválida';
     }
 
     setLoading();
     await Future.delayed(Durations.extralong4);
-    await externalLogin(currentSession!.credential, recovererPasswordContent);
+    await externalLogin(
+      credential: currentSession!.credential,
+      notifyToken: notifyToken,
+      password: recovererPasswordContent,
+    );
     setLoading();
     return null;
   }
@@ -94,10 +98,15 @@ class CoreController extends ChangeNotifier {
     return status;
   }
 
-  Future<void> externalLogin(String credential, String password) async {
+  Future<void> externalLogin({
+    required String credential,
+    required String password,
+    required String notifyToken,
+  }) async {
     final newUser = await loginController.externalLogin(
       credential: credential,
       password: password,
+      notifyToken: notifyToken,
     );
     user = newUser;
 

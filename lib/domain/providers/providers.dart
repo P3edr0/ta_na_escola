@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:ta_na_escola/data/base_datasource/auth/check_credential_datasource.dart';
 import 'package:ta_na_escola/data/datasources/auth/check_credential_datasource_impl.dart';
+import 'package:ta_na_escola/data/datasources/services/get_version.dart';
 import 'package:ta_na_escola/data/repository/login/login_repository_impl.dart';
 import 'package:ta_na_escola/domain/repository/auth/auth_repository.dart';
 import 'package:ta_na_escola/domain/repository/session/session_repository.dart';
@@ -8,6 +9,7 @@ import 'package:ta_na_escola/domain/repository/student/student_repository.dart';
 import 'package:ta_na_escola/domain/usecases/auth/check_credential_usecase.dart';
 import 'package:ta_na_escola/domain/usecases/auth/create_password_usecase.dart';
 import 'package:ta_na_escola/domain/usecases/auth/login_usecase.dart';
+import 'package:ta_na_escola/domain/usecases/services/version/get_version_usecase.dart';
 import 'package:ta_na_escola/domain/usecases/session/get_session_usecase.dart';
 import 'package:ta_na_escola/domain/usecases/student/fetch_student_usecase.dart';
 import 'package:ta_na_escola/presenter/auth/face_detector/store/face_capture_controller.dart';
@@ -24,6 +26,7 @@ import '../../data/base_datasource/auth/create_password_datasource.dart';
 import '../../data/base_datasource/auth/login_datasource.dart';
 import '../../data/base_datasource/auth/recover_password_datasource.dart';
 import '../../data/base_datasource/notification/notification_datasource.dart';
+import '../../data/base_datasource/services/get_version.dart';
 import '../../data/base_datasource/session/create_session.dart';
 import '../../data/base_datasource/session/delete_session.dart';
 import '../../data/base_datasource/session/get_session.dart';
@@ -46,10 +49,15 @@ import '../../data/repository/session/create_session_repository_impl.dart';
 import '../../data/repository/session/delete_session_repository_impl.dart';
 import '../../data/repository/session/get_session_repository_impl.dart';
 import '../../data/repository/student/student_repository_impl.dart';
+import '../../data/repository/version/get_version_repository_impl.dart';
 import '../../presenter/auth/create_password/controller/create_password_controller.dart';
 import '../../presenter/auth/credential/controller/controller.dart';
+import '../../services/version/app_version_service.dart';
+import '../../services/version/url_launcher_service.dart/url_launcher_service.dart';
+import '../../services/version/url_launcher_service.dart/url_launcher_service_impl.dart';
 import '../../shared/utils/routes/route_observer.dart';
 import '../repository/notification/notification_repository.dart';
+import '../repository/services/version_repository.dart';
 import '../usecases/auth/create_face_id_usecase.dart';
 import '../usecases/auth/recover_password_usecase.dart';
 import '../usecases/notification/get_notification_categories_usecase.dart';
@@ -62,6 +70,27 @@ import '../usecases/student/get_frequency_usecase.dart';
 
 class Providers {
   static final providers = [
+    /////////////////////// SERVICES PROVIDERS /////////
+    // GET VERSION /////////
+    Provider<IGetVersionDatasource>(
+      create: (ctx) => GetVersionDatasourceImpl(),
+    ),
+    Provider<IGetVersionRepository>(
+      create: (ctx) => GetVersionRepositoryImpl(
+        datasource: ctx.read<IGetVersionDatasource>(),
+      ),
+    ),
+
+    Provider<AppVersionService>(
+      create: (ctx) => AppVersionService(
+        getVersionUsecase: GetVersionUsecase(
+          repository: ctx.read<IGetVersionRepository>(),
+        ),
+      ),
+    ),
+    // URL LAUNCHER SERVICE /////////
+    Provider<IUrlLauncherService>(create: (ctx) => UrlLauncherServiceImpl()),
+
     /////////////////////// SESSION PROVIDERS /////////
     // CREATE SESSION /////////
     Provider<ICreateSessionDatasource>(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ta_na_escola/components/dialogs/info_dialog.dart';
 import 'package:ta_na_escola/domain/entities/home_card_item_entity.dart';
 import 'package:ta_na_escola/shared/utils/routes/app_routes.dart';
 
@@ -39,13 +40,68 @@ class _HomeCardCollectionState extends State<HomeCardCollection> {
           _navigator.goto(TneRoutes.notification);
         },
       ),
-      HomeCardItemEntity(title: 'Calendário', image: TneAppAssets.calendar),
+      HomeCardItemEntity(
+        title: 'Calendário',
+        image: TneAppAssets.calendar,
+        isNextFlag: true,
+        onTap: () {
+          InfoDialog.closeAuto(
+            'Em breve...',
+            'Estamos construindo essa funcionalidade!',
+            context,
+          );
+        },
+      ),
 
-      HomeCardItemEntity(title: 'Atividades', image: TneAppAssets.activity),
-      HomeCardItemEntity(title: 'Boletins', image: TneAppAssets.report),
+      HomeCardItemEntity(
+        title: 'Atividades',
+        image: TneAppAssets.activity,
+        isNextFlag: true,
+        onTap: () {
+          InfoDialog.closeAuto(
+            'Em breve...',
+            'Estamos construindo essa funcionalidade!',
+            context,
+          );
+        },
+      ),
+      HomeCardItemEntity(
+        title: 'Boletins',
+        image: TneAppAssets.report,
+        isNextFlag: true,
+        onTap: () {
+          InfoDialog.closeAuto(
+            'Em breve...',
+            'Estamos construindo essa funcionalidade!',
+            context,
+          );
+        },
+      ),
 
-      HomeCardItemEntity(title: 'Enquetes', image: TneAppAssets.poll),
-      HomeCardItemEntity(title: 'Configurações', image: TneAppAssets.configs),
+      HomeCardItemEntity(
+        title: 'Enquetes',
+        image: TneAppAssets.poll,
+        isNextFlag: true,
+        onTap: () {
+          InfoDialog.closeAuto(
+            'Em breve...',
+            'Estamos construindo essa funcionalidade!',
+            context,
+          );
+        },
+      ),
+      HomeCardItemEntity(
+        title: 'Configurações',
+        image: TneAppAssets.configs,
+        isNextFlag: true,
+        onTap: () {
+          InfoDialog.closeAuto(
+            'Em breve...',
+            'Estamos construindo essa funcionalidade!',
+            context,
+          );
+        },
+      ),
     ];
   }
 
@@ -70,6 +126,7 @@ class _HomeCardCollectionState extends State<HomeCardCollection> {
             title: item.title,
             image: item.image,
             onTap: item.onTap,
+            isNextFlag: false,
           );
         },
       ),

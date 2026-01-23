@@ -9,9 +9,11 @@ class HomeCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.image,
+    required this.isNextFlag,
     this.onTap,
   });
   final String title;
+  final bool isNextFlag;
   final String image;
   final void Function()? onTap;
   @override
@@ -19,10 +21,7 @@ class HomeCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsetsDirectional.symmetric(
-          vertical: Responsive.getSize(10),
-          horizontal: Responsive.getSize(10),
-        ),
+        padding: EdgeInsets.only(left: Responsive.getSize(10)),
         margin: EdgeInsetsDirectional.all(2),
         decoration: BoxDecoration(
           color: secondaryColor,
@@ -42,20 +41,49 @@ class HomeCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Image.asset(image, height: Responsive.getSize(50)),
-            SizedBox(height: Responsive.getSize(8)),
-            Text(
-              title,
-              style: TneFontStyle.bodySec.copyWith(
-                color: grey,
-                fontWeight: FontWeight.w400,
-              ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(image, height: Responsive.getSize(50)),
+                  SizedBox(height: Responsive.getSize(8)),
+                  Text(
+                    title,
+                    style: TneFontStyle.bodySec.copyWith(
+                      color: grey,
+                      fontWeight: FontWeight.w400,
+                    ),
 
-              textAlign: TextAlign.start,
+                    textAlign: TextAlign.start,
+                  ),
+                ],
+              ),
             ),
+            if (isNextFlag)
+              RotatedBox(
+                quarterTurns: 3,
+                child: Container(
+                  padding: EdgeInsets.all(Responsive.getSize(2)),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
+
+                    color: primaryColor,
+                  ),
+                  child: Text(
+                    'Em breve',
+                    style: TneFontStyle.verySmallBoldSec.copyWith(
+                      color: secondaryColor,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

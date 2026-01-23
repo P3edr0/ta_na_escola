@@ -33,7 +33,7 @@ class TneFrequencyChartState extends State<TneFrequencyChart> {
           PieChartData(
             borderData: FlBorderData(show: false),
             sectionsSpace: 0,
-            centerSpaceRadius: Responsive.getSize(25),
+            centerSpaceRadius: Responsive.getSize(30),
             sections: showingSections(),
           ),
         ),

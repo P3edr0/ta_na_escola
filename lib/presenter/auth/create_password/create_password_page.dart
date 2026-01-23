@@ -14,6 +14,7 @@ import '../../../components/step_by_step.dart';
 import '../../../components/textfields/textfield.dart';
 import '../../../responsiveness/leg_font_style.dart';
 import '../../../responsiveness/responsive.dart';
+import '../../../services/notification_service.dart';
 import '../../../shared/utils/formatters/password_formatter.dart';
 import '../../../theme/colors.dart';
 import '../credential/controller/controller.dart';
@@ -29,6 +30,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   void initState() {
     super.initState();
   }
+
+  final notifyService = FirebaseNotificationService();
 
   final AppNavigator _navigator = AppNavigator();
   @override
@@ -180,10 +183,12 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                     await credentialController.checkCredential();
                     final credential = credentialController.refinedCredential!;
                     final password = controller.password;
+                    final token = await notifyService.getToken();
 
                     await loginController.externalLogin(
                       credential: credential,
                       password: password,
+                      notifyToken: token!,
                     );
 
                     if (loginController.hasError) {

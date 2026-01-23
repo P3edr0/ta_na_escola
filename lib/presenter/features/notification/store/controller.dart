@@ -23,10 +23,15 @@ class NotificationController extends ChangeNotifier {
   NotificationCategoryEntity? selectedNotificationCategory;
   List<NotificationEntity> notifications = [];
   List<NotificationCategoryEntity> categories = [];
-
+  int? _notificationRequestPage = 1;
+  ScrollController scrollController = ScrollController();
   bool categoryLoading = false;
-  bool categoryDetailsLoading = false;
+  bool notificationsDetailsLoading = false;
+  bool moreNotificationsDetailsLoading = false;
+  String? exception;
   ////////////// GET
+
+  bool get hasError => exception != null;
 
   ////////////// FUNCTIONS
 
@@ -40,13 +45,30 @@ class NotificationController extends ChangeNotifier {
     notifyListeners();
   }
 
+  startNotificationsDetailsPage() {
+    notifications.clear();
+    setNotificationRequestPage(1);
+  }
+
   void setCategoryDetailsLoading([bool? newCategoryDetailLoading]) {
     if (newCategoryDetailLoading != null) {
-      categoryDetailsLoading = newCategoryDetailLoading;
+      notificationsDetailsLoading = newCategoryDetailLoading;
       notifyListeners();
       return;
     }
-    categoryDetailsLoading = !categoryDetailsLoading;
+    notificationsDetailsLoading = !notificationsDetailsLoading;
+    notifyListeners();
+  }
+
+  void setMoreNotificationsDetailsLoading([
+    bool? newMoreNotificationsDetailsLoading,
+  ]) {
+    if (newMoreNotificationsDetailsLoading != null) {
+      moreNotificationsDetailsLoading = newMoreNotificationsDetailsLoading;
+      notifyListeners();
+      return;
+    }
+    moreNotificationsDetailsLoading = !moreNotificationsDetailsLoading;
     notifyListeners();
   }
 
@@ -62,14 +84,21 @@ class NotificationController extends ChangeNotifier {
     setCategoryDetailsLoading();
     final handledData = data.copyWith(
       category: selectedNotificationCategory!.id,
+      page: _notificationRequestPage,
     );
     final response = await getNotificationsByCategoryUsecase(data: handledData);
     response.fold(
       (newException) {
+        exception = 'Falha ao buscar notificações';
+        log(newException.message, name: 'NOTIFICATION ERROR');
         setCategoryDetailsLoading();
       },
       (newNotifications) {
-        notifications = [...newNotifications];
+        exception = null;
+        if (newNotifications.isEmpty || newNotifications.length < 20) {
+          setNotificationRequestPage(null);
+        }
+        notifications = [...notifications, ...newNotifications];
         for (int index = 0; index < notifications.length; index++) {
           notifications[index] = notifications[index].copyWith(
             category: selectedNotificationCategory,
@@ -88,6 +117,48 @@ class NotificationController extends ChangeNotifier {
     );
   }
 
+  Future<void> getMoreNotificationsByCategory({
+    required DataNotificationEntity data,
+  }) async {
+    setNotificationRequestPage((_notificationRequestPage! + 1));
+
+    setMoreNotificationsDetailsLoading();
+    final handledData = data.copyWith(
+      category: selectedNotificationCategory!.id,
+      page: _notificationRequestPage,
+    );
+    final response = await getNotificationsByCategoryUsecase(data: handledData);
+    response.fold(
+      (newException) {
+        log(newException.message, name: 'MORE NOTIFICATION ERROR');
+        setMoreNotificationsDetailsLoading();
+      },
+      (newNotifications) {
+        if (newNotifications.isEmpty ||
+            _notificationRequestPage! > 1 && newNotifications.length < 20) {
+          setNotificationRequestPage(null);
+          setMoreNotificationsDetailsLoading();
+          return;
+        }
+        notifications = [...notifications, ...newNotifications];
+        for (int index = 0; index < notifications.length; index++) {
+          notifications[index] = notifications[index].copyWith(
+            category: selectedNotificationCategory,
+          );
+        }
+        notifications.sort((a, b) {
+          if (a.readAt != null && b.readAt != null) {
+            return a.readAt!.compareTo(b.readAt!);
+          } else {
+            return 1;
+          }
+        });
+
+        setMoreNotificationsDetailsLoading();
+      },
+    );
+  }
+
   Future<void> getNotificationCategories({
     required DataNotificationEntity data,
   }) async {
@@ -96,6 +167,8 @@ class NotificationController extends ChangeNotifier {
     final response = await getNotificationCategoriesUsecase(data: data);
     response.fold(
       (newException) {
+        exception = 'Falha ao buscar notificações';
+        log(newException.message, name: 'NOTIFICATION CATEGORY ERROR');
         setCategoryLoading();
       },
       (newCategories) {
@@ -103,7 +176,6 @@ class NotificationController extends ChangeNotifier {
         for (int index = 0; index < categories.length; index++) {
           categories[index] = categories[index].copyWith(
             onTap: () {
-              if (categories[index].notificationQtd < 1) return;
               final AppNavigator navigator = AppNavigator();
               navigator.goto(TneRoutes.notificationDetails);
             },
@@ -137,5 +209,17 @@ class NotificationController extends ChangeNotifier {
         }
       },
     );
+  }
+
+  setNotificationRequestPage(int? newNotificationRequestPage) {
+    _notificationRequestPage = newNotificationRequestPage;
+  }
+
+  bool hasMoreNotifications() {
+    if (selectedNotificationCategory!.category.isFrequency) return false;
+
+    if (_notificationRequestPage == null) return false;
+
+    return true;
   }
 }

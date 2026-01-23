@@ -16,4 +16,6 @@ class TneRoutes {
   static const fault = '/fault';
   static const notification = '/notification';
   static const notificationDetails = '/notification_details';
+  static const updateApp = '/update_app';
+  static const blockApp = '/block_app';
 }

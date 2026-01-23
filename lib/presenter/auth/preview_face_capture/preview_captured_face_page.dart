@@ -13,6 +13,7 @@ import '../../../components/loadings/loading_button.dart';
 import '../../../components/step_by_step.dart';
 import '../../../responsiveness/leg_font_style.dart';
 import '../../../responsiveness/responsive.dart';
+import '../../../services/notification_service.dart';
 import '../../../shared/utils/routes/app_navigator.dart';
 import '../../../shared/utils/routes/app_routes.dart';
 import '../../../theme/colors.dart';
@@ -156,8 +157,11 @@ class PreviewCapturedFacePageState extends State<PreviewCapturedFacePage> {
                     );
                     return;
                   }
+                  final notifyService = FirebaseNotificationService();
+                  final notifyToken = await notifyService.getToken();
                   await loginController.login(
                     credential: credentialController.refinedCredential!,
+                    notifyToken: notifyToken!,
                   );
                   if (context.mounted) {
                     await InfoDialog.closeAuto(

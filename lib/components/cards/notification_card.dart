@@ -15,6 +15,7 @@ class TneNotificationCard extends StatelessWidget {
     this.onTap,
   }) : date = null,
        isDetail = false,
+       isFrequency = false,
        read = true,
        content = null;
   const TneNotificationCard.details({
@@ -25,6 +26,7 @@ class TneNotificationCard extends StatelessWidget {
     required this.date,
     required this.content,
     required this.read,
+    required this.isFrequency,
     this.onTap,
   }) : isDetail = true,
        notificationQtd = 0;
@@ -36,10 +38,13 @@ class TneNotificationCard extends StatelessWidget {
   final int? notificationQtd;
   final bool isDetail;
   final bool read;
+  final bool isFrequency;
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final isExit = (isFrequency && isDetail && content!.contains('saiu'));
+    final handledColor = isExit ? alertColor : accentColor;
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -60,7 +65,7 @@ class TneNotificationCard extends StatelessWidget {
             BoxShadow(
               color: read
                   ? lightGrey.withValues(alpha: 0.03)
-                  : accentColor.withValues(alpha: 0.3),
+                  : handledColor.withValues(alpha: 0.3),
               blurRadius: 0.9,
               spreadRadius: 0.9,
               offset: Offset(1, 1),
@@ -70,7 +75,7 @@ class TneNotificationCard extends StatelessWidget {
               spreadRadius: 0.9,
               color: read
                   ? lightGrey.withValues(alpha: 0.03)
-                  : accentColor.withValues(alpha: 0.3),
+                  : handledColor.withValues(alpha: 0.3),
               offset: Offset(-1, -1),
             ),
           ],
@@ -81,7 +86,7 @@ class TneNotificationCard extends StatelessWidget {
           children: [
             Image.asset(image, height: Responsive.getSize(36)),
             SizedBox(width: Responsive.getSize(20)),
-            if (isDetail) detailsContent(),
+            if (isDetail) detailsContent(handledColor),
             if (!isDetail) ...categoryContent(),
           ],
         ),
@@ -123,7 +128,19 @@ class TneNotificationCard extends StatelessWidget {
     ];
   }
 
-  Widget detailsContent() {
+  Widget detailsContent(Color handledColor) {
+    String handledTitle = '';
+    bool isExit = false;
+    if (isFrequency) {
+      if (content!.contains('saiu')) {
+        handledTitle = 'Saída';
+        isExit = true;
+      } else {
+        handledTitle = 'Entrada';
+      }
+    } else {
+      handledTitle = title;
+    }
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,14 +148,16 @@ class TneNotificationCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TneBadge(label: title),
+              if (isExit) TneBadge.secondary(label: handledTitle),
+              if (!isExit) TneBadge(label: handledTitle),
+
               Spacer(),
               Text(
                 date!,
                 maxLines: 1,
 
                 style: TneFontStyle.smallSec.copyWith(
-                  color: accentColor,
+                  color: handledColor,
                   height: 1,
                 ),
               ),

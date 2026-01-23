@@ -23,6 +23,9 @@ class GetNotificationsByCategoryUsecase {
     if (data.category == null || data.category!.trim().isEmpty) {
       return Left(DataException(message: 'Dados inválido.'));
     }
+    if (data.page == null || data.page! < 1) {
+      return Left(DataException(message: 'Dados inválido.'));
+    }
 
     return await repository(data);
   }
