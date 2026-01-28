@@ -10,6 +10,7 @@ dependencies:
   camera: ^0.11.3
   crypto: ^3.0.7
   dartz: ^0.10.1
+  device_info_plus: ^12.3.0
   dio: ^5.9.0
   feather_icons: ^1.2.0
   firebase_core: ^4.2.1

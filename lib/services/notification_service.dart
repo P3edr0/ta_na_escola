@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class FirebaseNotificationService {
   static final _firebaseMessaging = FirebaseMessaging.instance;
@@ -38,29 +40,66 @@ class FirebaseNotificationService {
       AndroidNotification? android = message.notification?.android;
 
       if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              'high_importance_channel',
-              'High Importance Notifications',
-              channelDescription:
-                  'This channel is used for important notifications',
-              importance: Importance.high,
-              priority: Priority.high,
-              icon: '@mipmap/ic_launcher',
-            ),
-          ),
-        );
+         AndroidNotificationDetails? androidPlatformChannelSpecifics;
+    if (Platform.isAndroid && message.notification?.android != null) {
+      androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'high_importance_channel',
+        'High Importance Notifications',
+        channelDescription: 'This channel is used for important notifications',
+        importance: Importance.high,
+        priority: Priority.high,
+        icon: '@mipmap/ic_launcher',
+      );
+    }
+
+
+ DarwinNotificationDetails? iosPlatformChannelSpecifics;
+    if (Platform.isIOS) {
+      iosPlatformChannelSpecifics = DarwinNotificationDetails(
+        presentAlert: true,  // Mostra alerta
+        presentBadge: true,  // Atualiza badge
+        presentSound: true,  // Toca som
+      );
+    }
+
+    // Exibir notificação com configurações específicas da plataforma
+    flutterLocalNotificationsPlugin.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iosPlatformChannelSpecifics, // <-- ADICIONADO
+      ),
+    );
+
+
+
+
+
       }
     });
 
     final AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
+  final DarwinInitializationSettings darwinInitializationSettings =
+      DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+  // onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) async {
+  //   // Lógica opcional quando uma notificação local é recebida no iOS
+  //   log('Notificação local recebida no iOS: $title', name: 'NotificationService');
+  // },
+);
+
+  
+
     final InitializationSettings initializationSettings =
-        InitializationSettings(android: androidInitializationSettings);
+        InitializationSettings(android: androidInitializationSettings, iOS: darwinInitializationSettings);
+        // NOVO: Configuração para iOS
+  // Apenas solicita permissão para exibir alertas, sons e badges.
+
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
@@ -73,11 +112,16 @@ class FirebaseNotificationService {
   }
 
   Future<String?> getToken() async {
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+final isIos = Platform.isIOS;
+
+  final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+
+    if (isIos&& !iosInfo.isPhysicalDevice) return null;
     final token = await _firebaseMessaging.getToken();
     log(token.toString(), name: 'Token');
     return token;
   }
-
   static void _onNotificationTap(NotificationResponse details) {
     log('Notificação tocada: ${details.payload}', name: 'NotificationService');
     // Aqui você pode navegar para uma tela específica
