@@ -26,11 +26,21 @@ class FrequencyController extends ChangeNotifier {
   final TextEditingController finalDateController = TextEditingController();
   final TextEditingController faultDateController = TextEditingController();
   final TextEditingController faultJustifyController = TextEditingController();
-  FrequencyStatsEntity? frequencyStats;
+  FrequencyStatsEntity frequencyStats = FrequencyStatsEntity(
+    presences: 0,
+    absences: 0,
+    presencesPercentage: 0,
+    absencesPercentage: 0,
+    total: 0,
+  );
   bool loading = false;
   bool filterLoading = false;
   String? exception;
   ////////////// GET
+  bool get isValidFilter =>
+      startDateController.text.trim().isNotEmpty &&
+      finalDateController.text.trim().isNotEmpty;
+  bool get hasError => exception != null;
 
   ////////////// FUNCTIONS
 
@@ -103,18 +113,26 @@ class FrequencyController extends ChangeNotifier {
   }
 
   Future<void> getFilteredFrequency({required DataFrequencyEntity data}) async {
+    if (!isValidFilter) {
+      exception = 'Insira uma data válida';
+      notifyListeners();
+      return;
+    }
     setFilterLoading();
     final startDate = TneDateFormat.ymd(startDateController.text);
     final finalDate = TneDateFormat.ymd(finalDateController.text);
 
     if (startDate == null || finalDate == null) {
       exception = 'Insira uma data válida';
+      setFilterLoading();
+
       return;
     }
     final handledData = data.copyWith(
       startFilterDate: startDate,
       finalFilterDate: finalDate,
     );
+    exception = null;
     final response = await getFilteredFrequencyUsecase(data: handledData);
     response.fold(
       (newException) {

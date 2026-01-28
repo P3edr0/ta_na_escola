@@ -65,7 +65,10 @@ class LoginController extends ChangeNotifier {
     return true;
   }
 
-  Future<void> login({required String credential, String? notifyToken}) async {
+  Future<void> login({
+    required String credential,
+    required String notifyToken,
+  }) async {
     setLoading();
     final password = passwordController.text;
 
@@ -97,12 +100,14 @@ class LoginController extends ChangeNotifier {
   Future<UserEntity?> externalLogin({
     required String credential,
     required String password,
+    required String notifyToken,
   }) async {
     setLoading();
 
     final response = await loginUsecase(
       credential: credential,
       password: password,
+      notifyToken: notifyToken,
     );
     response.fold(
       (newException) {

@@ -9,11 +9,14 @@ import 'package:ta_na_escola/presenter/features/home/controller/controller.dart'
 import 'package:ta_na_escola/responsiveness/leg_font_style.dart';
 import 'package:ta_na_escola/shared/utils/app_assets.dart';
 import 'package:ta_na_escola/shared/utils/handler/name_handler.dart';
+import 'package:ta_na_escola/shared/utils/routes/app_routes.dart';
 
 import '../../../../responsiveness/responsive.dart';
 import '../../../../theme/colors.dart';
 import '../../../components/avatar/avatar_border.dart';
+import '../../../components/dialogs/error_dialog.dart';
 import '../../../components/dialogs/quit_app_dialog.dart';
+import '../../../shared/utils/routes/app_navigator.dart';
 import 'widgets/home_card_collection.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +26,8 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  final AppNavigator _navigator = AppNavigator();
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +36,14 @@ class HomePageState extends State<HomePage> {
       final loginController = context.read<LoginController>();
       final token = loginController.user!.token;
       await controller.fetchStudent(token: token);
+      if (context.mounted) {
+        if (controller.hasError) {
+          await ErrorDialog.show('Atenção', controller.exception!, context);
+
+          _navigator.goto(TneRoutes.credential, clearStack: true);
+          return;
+        }
+      }
     });
   }
 

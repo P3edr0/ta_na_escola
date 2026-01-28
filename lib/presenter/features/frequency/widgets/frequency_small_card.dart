@@ -19,7 +19,7 @@ class FrequencySmallCard extends StatelessWidget {
     return Expanded(
       child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(Responsive.getSize(8)),
+        padding: EdgeInsets.all(Responsive.getSize(6)),
         margin: EdgeInsets.symmetric(horizontal: Responsive.getSize(2)),
         decoration: BoxDecoration(
           color: lightGrey.withValues(alpha: 0.025),

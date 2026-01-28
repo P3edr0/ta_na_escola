@@ -6,6 +6,7 @@ class DataNotificationEntity {
   final String token;
   final String? notificationTargetId;
   final String? category;
+  final int? page;
 
   DataNotificationEntity({
     required this.studentId,
@@ -14,6 +15,7 @@ class DataNotificationEntity {
     this.notificationTargetId,
 
     this.category,
+    this.page,
   });
 
   DataNotificationEntity copyWith({
@@ -22,6 +24,7 @@ class DataNotificationEntity {
     String? token,
     String? notificationTargetId,
     String? category,
+    int? page,
   }) {
     return DataNotificationEntity(
       studentId: studentId ?? this.studentId,
@@ -29,6 +32,7 @@ class DataNotificationEntity {
       token: token ?? this.token,
       category: category ?? this.category,
       notificationTargetId: notificationTargetId ?? this.notificationTargetId,
+      page: page ?? this.page,
     );
   }
 }

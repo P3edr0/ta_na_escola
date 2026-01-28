@@ -10,18 +10,19 @@ import 'package:ta_na_escola/presenter/features/frequency/store/controller.dart'
 import 'package:ta_na_escola/presenter/features/frequency/widgets/frequency_chart.dart';
 import 'package:ta_na_escola/presenter/features/frequency/widgets/frequency_list.dart';
 import 'package:ta_na_escola/shared/utils/formatters/date_formatter.dart';
-import 'package:ta_na_escola/shared/utils/routes/app_routes.dart';
 
 import '../../../../../components/app_bar/app_bar.dart';
 import '../../../../../components/avatar/avatar_border.dart';
 import '../../../../../components/badges/badge.dart';
+import '../../../../../components/cards/frequency_types_card.dart';
+import '../../../../../components/dialogs/error_dialog.dart';
+import '../../../../../components/dialogs/info_dialog.dart';
 import '../../../../../components/loadings/loading.dart';
 import '../../../../../components/texts/time_register.dart';
 import '../../../../../responsiveness/leg_font_style.dart';
 import '../../../../../responsiveness/responsive.dart';
 import '../../../../../shared/utils/app_assets.dart';
 import '../../../../../shared/utils/handler/name_handler.dart';
-import '../../../../../shared/utils/routes/app_navigator.dart';
 import '../../../../../theme/colors.dart';
 import '../../../home/controller/controller.dart';
 import '../../widgets/frequency_small_card.dart';
@@ -87,10 +88,11 @@ class _FrequencyPageState extends State<FrequencyPage> {
                       TneAppBar(title: 'Entrada/Saída'),
 
                       Positioned(
-                        top: Responsive.getSize(200),
-                        bottom: Responsive.getSize(0),
+                        //FUNDO BRANCO
+                        top: Responsive.getSize(250),
                         left: 0,
                         right: 0,
+                        bottom: 0,
                         child: Container(
                           padding: EdgeInsetsDirectional.symmetric(
                             horizontal: Responsive.getSize(28),
@@ -137,9 +139,15 @@ class _FrequencyPageState extends State<FrequencyPage> {
                                         ),
                                       ),
                                       onTap: () {
-                                        final AppNavigator navigator =
-                                            AppNavigator();
-                                        navigator.goto(TneRoutes.fault);
+                                        InfoDialog.closeAuto(
+                                          'Em breve...',
+                                          'Estamos construindo essa funcionalidade!',
+                                          context,
+                                        );
+
+                                        // final AppNavigator navigator =
+                                        //     AppNavigator();
+                                        // navigator.goto(TneRoutes.fault);
                                       },
                                     ),
                                   ],
@@ -203,86 +211,8 @@ class _FrequencyPageState extends State<FrequencyPage> {
                                         ],
                                       ),
                                       SizedBox(height: Responsive.getSize(16)),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          //HORARIOS
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              TneTimeRegister(
-                                                color: accentColor,
-                                                time:
-                                                    controller
-                                                        .todayFrequency
-                                                        ?.entryTime ??
-                                                    '--:--',
-                                              ),
-                                              SizedBox(
-                                                height: Responsive.getSize(42),
-                                              ),
-                                              TneTimeRegister(
-                                                color: blueGrey,
-                                                time:
-                                                    controller
-                                                        .todayFrequency
-                                                        ?.exitTime ??
-                                                    '--:--',
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: Responsive.getSize(5),
-                                          ),
-                                          //LINHAS E STEPS
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: Responsive.getSize(5),
-                                              ),
-                                              TneAvatarBorder.withColor(
-                                                radius: 4,
-                                                color: accentColor,
-                                              ),
-                                              Container(
-                                                color: accentColor,
-                                                width: Responsive.getSize(2),
+                                      contentManager(controller),
 
-                                                height: Responsive.getSize(58),
-                                              ),
-
-                                              TneAvatarBorder.withColor(
-                                                radius: 4,
-                                                color: blueGrey,
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: Responsive.getSize(5),
-                                          ),
-
-                                          //SMALL CARDS
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: Responsive.getSize(5),
-                                                ),
-                                                TneFrequencyCard.entry(),
-                                                SizedBox(
-                                                  height: Responsive.getSize(8),
-                                                ),
-
-                                                TneFrequencyCard.exit(),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                       SizedBox(height: Responsive.getSize(8)),
                                     ],
                                   ),
@@ -375,13 +305,13 @@ class _FrequencyPageState extends State<FrequencyPage> {
                                         builder:
                                             (
                                               context,
-                                              componentController,
+                                              frequencyComponentController,
                                               child,
                                             ) {
                                               return TneRoundedButton(
                                                 padding: 40,
                                                 child:
-                                                    componentController
+                                                    frequencyComponentController
                                                         .filterLoading
                                                     ? TneLoadingButton()
                                                     : Text(
@@ -394,6 +324,24 @@ class _FrequencyPageState extends State<FrequencyPage> {
                                                             ),
                                                       ),
                                                 onTap: () async {
+                                                  if (controller.hasError) {
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback((
+                                                          _,
+                                                        ) async {
+                                                          if (context.mounted) {
+                                                            await ErrorDialog.show(
+                                                              'Atenção',
+                                                              controller
+                                                                  .exception!,
+                                                              context,
+                                                            );
+                                                            return;
+                                                          }
+                                                        });
+                                                    return;
+                                                  }
+
                                                   final student = homeController
                                                       .selectedStudent!;
                                                   final user =
@@ -407,7 +355,7 @@ class _FrequencyPageState extends State<FrequencyPage> {
                                                         token: user.token,
                                                         pages: [1],
                                                       );
-                                                  await componentController
+                                                  await frequencyComponentController
                                                       .getFilteredFrequency(
                                                         data: data,
                                                       );
@@ -434,10 +382,11 @@ class _FrequencyPageState extends State<FrequencyPage> {
                         ),
                       ),
                       Positioned(
-                        bottom: Responsive.getSize(550),
+                        //CARD FRONTAL
+                        top: Responsive.getSize(130),
                         left: 0,
                         right: 0,
-                        top: Responsive.getSize(96),
+                        // top: Responsive.getSize(96),
                         child: Container(
                           padding: EdgeInsets.all(Responsive.getSize(16)),
                           margin: EdgeInsets.symmetric(
@@ -478,46 +427,44 @@ class _FrequencyPageState extends State<FrequencyPage> {
                                 ],
                               ),
                               SizedBox(height: Responsive.getSize(12)),
-                              Expanded(
+                              SizedBox(
+                                height: Responsive.getSize(80),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
+
                                   children: [
                                     FrequencySmallCard(
                                       content:
-                                          controller.frequencyStats!.presences,
+                                          controller.frequencyStats.presences,
                                       contentColor: accentColor,
                                       title: 'Presenças',
                                     ),
                                     FrequencySmallCard(
                                       content:
-                                          controller.frequencyStats!.absences,
+                                          controller.frequencyStats.absences,
                                       contentColor: alertColor,
                                       title: 'Faltas',
                                     ),
                                     FrequencySmallCard(
-                                      content: controller.frequencyStats!.total,
+                                      content: controller.frequencyStats.total,
                                       contentColor: blueGrey,
                                       title: 'Aulas',
                                     ),
 
                                     SizedBox(width: Responsive.getSize(10)),
                                     SizedBox(
-                                      width: Responsive.getSize(50),
+                                      width: Responsive.getSize(54),
+                                      height: Responsive.getSize(54),
                                       child: TneFrequencyChart(
                                         absencesPercentage: controller
-                                            .frequencyStats!
+                                            .frequencyStats
                                             .absencesPercentage,
                                         presencesPercentage: controller
-                                            .frequencyStats!
+                                            .frequencyStats
                                             .presencesPercentage,
                                       ),
                                     ),
-                                    SizedBox(width: Responsive.getSize(8)),
-
-                                    // TneAvatar(
-                                    //   image: AssetImage(TneAppAssets.logo),
-                                    //   radius: 26,
-                                    // ),
+                                    SizedBox(width: Responsive.getSize(6)),
                                   ],
                                 ),
                               ),
@@ -549,10 +496,10 @@ class _FrequencyPageState extends State<FrequencyPage> {
                         ),
                       ),
                       Positioned(
-                        bottom: Responsive.getSize(590),
+                        //MENINA
+                        top: Responsive.getSize(90),
                         left: 0,
                         right: 0,
-                        top: Responsive.getSize(-20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -580,6 +527,105 @@ class _FrequencyPageState extends State<FrequencyPage> {
           },
         ),
       ),
+    );
+  }
+
+  Widget contentManager(FrequencyController controller) {
+    String? label;
+    IconData? icon;
+    Color? color;
+
+    if (controller.todayFrequency == null) {
+      label = 'Hoje não tem aula';
+      icon = Icons.sentiment_very_satisfied_outlined;
+      color = mediumGrey;
+      return TneFrequencyTypesCard(label: label, color: color, icon: icon);
+    }
+
+    if (controller.todayFrequency!.entryTime != null) {
+      return TodayPresenceContent(
+        entryTime: controller.todayFrequency?.entryTime,
+        exitTime: controller.todayFrequency?.exitTime,
+      );
+    }
+
+    if (!controller.todayFrequency!.didHaveClass) {
+      label = 'Aguardando o horário da aula';
+      icon = Icons.timer_outlined;
+      color = warning.shade600;
+    }
+
+    if (controller.todayFrequency!.didHaveClass &&
+        controller.todayFrequency!.entryTime == null) {
+      label = 'Você faltou hoje';
+      icon = Icons.warning_rounded;
+      color = alertColor;
+    }
+    if (label == null || icon == null || color == null) {
+      label = 'Estamos preparando seus dados';
+      icon = Icons.settings;
+      color = mediumGrey;
+    }
+
+    return TneFrequencyTypesCard(label: label, color: color, icon: icon);
+  }
+}
+
+class TodayPresenceContent extends StatelessWidget {
+  const TodayPresenceContent({
+    super.key,
+    required this.entryTime,
+    required this.exitTime,
+  });
+  final String? entryTime;
+  final String? exitTime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        //HORARIOS
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            TneTimeRegister(color: accentColor, time: entryTime ?? '--:--'),
+            SizedBox(height: Responsive.getSize(42)),
+            TneTimeRegister(color: blueGrey, time: exitTime ?? '--:--'),
+          ],
+        ),
+        SizedBox(width: Responsive.getSize(5)),
+        //LINHAS E STEPS
+        Column(
+          children: [
+            SizedBox(height: Responsive.getSize(5)),
+            TneAvatarBorder.withColor(radius: 4, color: accentColor),
+            Container(
+              color: accentColor,
+              width: Responsive.getSize(2),
+
+              height: Responsive.getSize(58),
+            ),
+
+            TneAvatarBorder.withColor(radius: 4, color: blueGrey),
+          ],
+        ),
+        SizedBox(width: Responsive.getSize(5)),
+
+        //SMALL CARDS
+        Expanded(
+          child: Column(
+            children: [
+              SizedBox(height: Responsive.getSize(5)),
+              TneFrequencyCard.entry(),
+              SizedBox(height: Responsive.getSize(8)),
+
+              TneFrequencyCard.exit(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

@@ -7,9 +7,11 @@ class HomeController extends ChangeNotifier {
   final FetchStudentUsecase fetchStudentUsecase;
   List<StudentEntity> students = [];
   StudentEntity? selectedStudent;
+  String? exception;
 
   bool loading = false;
   ////////////// GET
+  bool get hasError => exception != null;
 
   ////////////// FUNCTIONS
 
@@ -34,14 +36,20 @@ class HomeController extends ChangeNotifier {
     final response = await fetchStudentUsecase(token: token);
     response.fold(
       (newException) {
+        exception = newException.message;
         setLoading();
       },
       (newStudents) {
         students = [...newStudents];
         if (students.isNotEmpty) {
+          exception = null;
+
           setSelectedStudent(students.first);
-          setLoading();
+        } else {
+          exception =
+              'Você não possui dependentes cadastrados\n Entre em contato com a escola.';
         }
+        setLoading();
       },
     );
   }
