@@ -117,7 +117,7 @@ final isIos = Platform.isIOS;
 
   final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
 
-    if (isIos&& !iosInfo.isPhysicalDevice) return null;
+    if (isIos&& !iosInfo.isPhysicalDevice) return 'emulator_ios_token';
     final token = await _firebaseMessaging.getToken();
     log(token.toString(), name: 'Token');
     return token;
