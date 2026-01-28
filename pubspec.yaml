@@ -1,7 +1,7 @@
 name: ta_na_escola
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.2.2+8
+version: 1.2.3+9
 
 environment:
   sdk: ^3.9.0
