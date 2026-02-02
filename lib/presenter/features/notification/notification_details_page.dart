@@ -168,9 +168,7 @@ class _NotificationDetailsPageState extends State<NotificationDetailsPage> {
                                     ],
                                   ),
                                 )
-                              :
-                                //////////////
-                                ListView.builder(
+                              : ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: notifyLength,
                                   controller: controller.scrollController,
@@ -227,12 +225,11 @@ class _NotificationDetailsPageState extends State<NotificationDetailsPage> {
                                                 .getTitle();
                                           }
                                           NotificationDialog.show(
-                                            image: notification
-                                                .category!
-                                                .category
-                                                .getImage(),
-                                            title: handledTitle,
+                                            image: notification.image,
+                                            title: notification.title,
                                             content: notification.content!,
+                                            htmlContent:
+                                                notification.htmlContent!,
                                             context: context,
                                           );
                                           if (notification.readAt == null) {

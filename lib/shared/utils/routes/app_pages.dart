@@ -18,6 +18,7 @@ import 'package:ta_na_escola/presenter/features/splash/bloc_app_page.dart';
 import 'package:ta_na_escola/presenter/features/splash/splash_page.dart';
 import 'package:ta_na_escola/presenter/features/splash/update_app_page.dart';
 
+import '../../../presenter/features/calendar/calendar_page.dart';
 import '../../../presenter/features/notification/notification_details_page.dart';
 import 'app_routes.dart';
 
@@ -62,6 +63,8 @@ class AppPages {
         return MaterialPageRoute(builder: (_) => UpdateAppPage());
       case == TneRoutes.blockApp:
         return MaterialPageRoute(builder: (_) => BlocAppPage());
+      case == TneRoutes.calendar:
+        return MaterialPageRoute(builder: (_) => CalendarPage());
 
       default:
         return MaterialPageRoute(

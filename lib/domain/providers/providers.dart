@@ -21,6 +21,7 @@ import 'package:ta_na_escola/presenter/features/frequency/store/controller.dart'
 import 'package:ta_na_escola/presenter/features/home/controller/controller.dart';
 import 'package:ta_na_escola/presenter/features/notification/store/controller.dart';
 
+import '../../data/base_datasource/agenda/agenda_datasource.dart';
 import '../../data/base_datasource/auth/create_face_id_datasource.dart';
 import '../../data/base_datasource/auth/create_password_datasource.dart';
 import '../../data/base_datasource/auth/login_datasource.dart';
@@ -31,6 +32,7 @@ import '../../data/base_datasource/session/create_session.dart';
 import '../../data/base_datasource/session/delete_session.dart';
 import '../../data/base_datasource/session/get_session.dart';
 import '../../data/base_datasource/student/student_datasource.dart';
+import '../../data/datasources/agenda/get_agenda_by_month_datasource.dart';
 import '../../data/datasources/auth/create_face_id_datasource_impl.dart';
 import '../../data/datasources/auth/create_password_datasource_impl.dart';
 import '../../data/datasources/auth/login_datasource_impl.dart';
@@ -44,6 +46,7 @@ import '../../data/datasources/notification/update_notification_status_datasourc
 import '../../data/datasources/student/fetch_student_datasource.dart';
 import '../../data/datasources/student/get_filtered_frequency_datasource.dart';
 import '../../data/datasources/student/get_frequency_datasource.dart';
+import '../../data/repository/agenda/agenda_repository_impl.dart';
 import '../../data/repository/notification/notification_repository_impl.dart';
 import '../../data/repository/session/create_session_repository_impl.dart';
 import '../../data/repository/session/delete_session_repository_impl.dart';
@@ -52,14 +55,17 @@ import '../../data/repository/student/student_repository_impl.dart';
 import '../../data/repository/version/get_version_repository_impl.dart';
 import '../../presenter/auth/create_password/controller/create_password_controller.dart';
 import '../../presenter/auth/credential/controller/controller.dart';
+import '../../presenter/features/calendar/store/controller.dart';
 import '../../services/version/app_version_service.dart';
 import '../../services/version/url_launcher_service.dart/url_launcher_service.dart';
 import '../../services/version/url_launcher_service.dart/url_launcher_service_impl.dart';
 import '../../shared/utils/routes/route_observer.dart';
+import '../repository/calendar/calendar_repository.dart';
 import '../repository/notification/notification_repository.dart';
 import '../repository/services/version_repository.dart';
 import '../usecases/auth/create_face_id_usecase.dart';
 import '../usecases/auth/recover_password_usecase.dart';
+import '../usecases/calendar/get_agenda_by_month_usecase.dart';
 import '../usecases/notification/get_notification_categories_usecase.dart';
 import '../usecases/notification/get_notifications_by_category_usecase.dart';
 import '../usecases/notification/update_notification_status_usecase .dart';
@@ -309,6 +315,24 @@ class Providers {
         ),
         updateNotificationStatusUsecase: UpdateNotificationStatusUsecase(
           repository: ctx.read<IUpdateNotificationStatusRepository>(),
+        ),
+      ),
+    ),
+
+    // AGENDA /////////
+    Provider<IGetAgendaByMonthDatasource>(
+      create: (ctx) => GetAgendaByMonthDatasourceImpl(),
+    ),
+    Provider<IGetCalendarByMonthRepository>(
+      create: (ctx) => GetAgendaByMonthRepositoryImpl(
+        datasource: ctx.read<IGetAgendaByMonthDatasource>(),
+      ),
+    ),
+
+    ChangeNotifierProvider<CalendarController>(
+      create: (ctx) => CalendarController(
+        getAgendaByMonthUsecase: GetAgendaByMonthUsecase(
+          repository: ctx.read<IGetCalendarByMonthRepository>(),
         ),
       ),
     ),

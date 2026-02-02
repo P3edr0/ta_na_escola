@@ -45,11 +45,7 @@ class _HomeCardCollectionState extends State<HomeCardCollection> {
         image: TneAppAssets.calendar,
         isNextFlag: true,
         onTap: () {
-          InfoDialog.closeAuto(
-            'Em breve...',
-            'Estamos construindo essa funcionalidade!',
-            context,
-          );
+          _navigator.goto(TneRoutes.calendar);
         },
       ),
 

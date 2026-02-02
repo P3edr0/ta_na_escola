@@ -1,3 +1,5 @@
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:ta_na_escola/shared/utils/handler/value_handler.dart';
 
@@ -80,6 +82,29 @@ class TneDateFormat {
     };
 
     return '$day $monthName | $hour:$minutes';
+  }
+
+  static String calendarFormat(DateTime date) {
+    final year = date.year;
+    final month = date.month;
+
+    final monthName = switch (month) {
+      1 => 'Janeiro',
+      2 => 'Fevereiro',
+      3 => 'Março',
+      4 => 'Abril',
+      5 => 'Maio',
+      6 => 'Junho',
+      7 => 'Julho',
+      8 => 'Agosto',
+      9 => 'Setembro',
+      10 => 'Outubro',
+      11 => 'Novembro',
+      12 => 'Dezembro',
+      _ => 'Mês inválido',
+    };
+
+    return '$monthName $year';
   }
 
   static DateTime? birthDayFormatter(
@@ -165,6 +190,24 @@ class TneDateFormat {
     final content =
         '${handledDate.year}-${handledDate.month}-${handledDate.day}';
 
+    return content;
+  }
+
+  static String getWeekdayAbbreviation(DateTime date) {
+    String locale = 'pt_BR';
+    initializeDateFormatting(locale);
+
+    final format = DateFormat('E', locale);
+    String content = format.format(date);
+    content = content.replaceFirst(content[0], content[0].toUpperCase());
+    content = content.replaceFirst('.', '');
+    return content;
+  }
+
+  static String getHour(DateTime date) {
+    String minute = TneValueHandler.smallNumberToShow(date.minute);
+    String hour = TneValueHandler.smallNumberToShow(date.hour);
+    String content = '$hour:$minute';
     return content;
   }
 }

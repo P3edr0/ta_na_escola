@@ -25,10 +25,10 @@ class UrlLauncherServiceImpl implements IUrlLauncherService {
     try {
       final uri = _parseUrl(url);
 
-      if (!await canLaunchUrl(uri)) {
-        log('Não é possível abrir esta URL: $url');
-        return false;
-      }
+      // if (!await canLaunchUrl(uri)) {
+      //   log('Não é possível abrir esta URL: $url');
+      //   return false;
+      // }
 
       final success = await launchUrl(uri);
 

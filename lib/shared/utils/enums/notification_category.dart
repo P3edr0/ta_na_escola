@@ -3,28 +3,31 @@ import '../app_assets.dart';
 enum NotificationCategory {
   directory,
   frequency,
-  system,
   activity,
   utility,
+  teacher,
+  occurrence,
   newsAndEvents;
 
   bool get isDirectory => this == directory;
   bool get isFrequency => this == frequency;
-  bool get isSystem => this == system;
   bool get isNewsAndEvents => this == newsAndEvents;
   bool get isUtility => this == utility;
   bool get isActivity => this == activity;
+  bool get isOccurrence => this == occurrence;
+  bool get isTeacher => this == teacher;
 
   String getImage() {
     switch (this) {
       case directory:
         return TneAppAssets.directory;
+      case occurrence:
+        return TneAppAssets.directory;
+      case teacher:
+        return TneAppAssets.directory;
 
       case frequency:
         return TneAppAssets.frequency;
-
-      case system:
-        return TneAppAssets.notifyAppLogo;
 
       case activity:
         return TneAppAssets.activity;
@@ -45,8 +48,10 @@ enum NotificationCategory {
       case frequency:
         return 'Entradas e saídas';
 
-      case system:
-        return 'Tá na Escola';
+      case teacher:
+        return 'Professor';
+      case occurrence:
+        return 'Ocorrências';
 
       case activity:
         return 'Atividades';
@@ -67,8 +72,10 @@ enum NotificationCategory {
       case 'Entradas e Saídas':
         return frequency;
 
-      case 'Tá na Escola':
-        return system;
+      case 'Ocorrências':
+        return occurrence;
+      case 'Professor':
+        return teacher;
 
       case 'Atividades':
         return activity;

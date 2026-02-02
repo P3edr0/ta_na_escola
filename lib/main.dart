@@ -31,6 +31,7 @@ void main() async {
         navigatorObservers: [routeObserver],
         theme: TneAppTheme.lightTheme,
         themeMode: ThemeMode.light,
+        locale: Locale('pt_BR'),
         debugShowCheckedModeBanner: false,
       ),
     ),

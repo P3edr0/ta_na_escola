@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -121,6 +122,15 @@ class HomePageState extends State<HomePage> {
                                         color: secondaryColor,
                                       ),
                                     ),
+                                    Spacer(),
+                                    if (kDebugMode || kProfileMode)
+                                      Text(
+                                        'VERSÂO DE TESTE',
+                                        style: TneFontStyle.bodyBold.copyWith(
+                                          color: alertColor,
+                                        ),
+                                      ),
+                                    SizedBox(width: Responsive.getSize(24)),
                                   ],
                                 ),
                               );

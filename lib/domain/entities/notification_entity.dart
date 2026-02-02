@@ -5,6 +5,8 @@ class NotificationEntity {
   final DateTime? sendAt;
   final DateTime? readAt;
   final String? title;
+  final String? image;
+  final String? htmlContent;
   final String? content;
   final String? notificationId;
   final String? notificationTargetId;
@@ -15,6 +17,8 @@ class NotificationEntity {
     this.readAt,
     required this.title,
     required this.content,
+    required this.image,
+    required this.htmlContent,
     this.notificationId,
     this.notificationTargetId,
     this.fcmId,
@@ -29,6 +33,8 @@ class NotificationEntity {
     String? notificationId,
     String? notificationTargetId,
     String? fcmId,
+    String? image,
+    String? htmlContent,
   }) {
     return NotificationEntity(
       category: category ?? this.category,
@@ -38,6 +44,8 @@ class NotificationEntity {
       content: content ?? this.content,
       notificationId: notificationId ?? this.notificationId,
       notificationTargetId: notificationTargetId ?? this.notificationTargetId,
+      htmlContent: htmlContent ?? this.htmlContent,
+      image: image ?? this.image,
       fcmId: fcmId ?? this.fcmId,
     );
   }
