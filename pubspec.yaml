@@ -1,12 +1,16 @@
 name: ta_na_escola
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.3.0+11
+#IOS VERSION
+#version: 1.3.0+10
+#ANDROID VERSION
+version: 1.2.3+9
 
 environment:
   sdk: ^3.9.0
 
 dependencies:
+  cached_network_image: ^3.4.1
   camera: ^0.11.3
   crypto: ^3.0.7
   dartz: ^0.10.1
@@ -18,6 +22,7 @@ dependencies:
   fl_chart: ^1.1.1
   flutter:
     sdk: flutter
+  flutter_html: ^3.0.0
   flutter_image_compress: ^2.4.0
   flutter_local_notifications: ^19.5.0
   flutter_secure_storage: ^10.0.0
@@ -27,6 +32,7 @@ dependencies:
   google_mlkit_face_detection: ^0.13.1
   gradient_widgets_plus: ^1.0.0
   image: ^4.5.4
+  intl: ^0.20.2
   mask_text_input_formatter: ^2.9.0
   package_info_plus: ^9.0.0
   permission_handler: ^12.0.1

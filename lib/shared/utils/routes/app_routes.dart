@@ -18,4 +18,5 @@ class TneRoutes {
   static const notificationDetails = '/notification_details';
   static const updateApp = '/update_app';
   static const blockApp = '/block_app';
+  static const calendar = '/calendar';
 }

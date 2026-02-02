@@ -4,6 +4,8 @@ class NotificationMapper {
   static NotificationEntity fromMap(Map<String, dynamic> data) {
     String? title;
     String? content;
+    String? htmlContent;
+    String? image;
     String? notificationId;
     String? notificationTargetId;
     String? fcmId;
@@ -25,6 +27,8 @@ class NotificationMapper {
     title = data["tituloFinal"];
     content = data["corpoFinal"];
     notificationId = data["idNotificacao"];
+    htmlContent = data["corpoHtmlFinal"];
+    image = data["urlImagemFinal"];
     notificationTargetId = data["idNotificacaoDestinatario"];
     fcmId = data["fcmId"];
     return NotificationEntity(
@@ -35,6 +39,8 @@ class NotificationMapper {
       fcmId: fcmId,
       sendAt: sendTime,
       readAt: readTime,
+      image: image,
+      htmlContent: htmlContent,
     );
   }
 }
