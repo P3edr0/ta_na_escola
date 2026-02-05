@@ -29,87 +29,98 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   final AppNavigator _navigator = AppNavigator();
+    final FocusNode _focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+     
 
-          children: <Widget>[
-            TneBackButton(),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-
-                  children: [
-                    SizedBox(height: Responsive.getSize(30)),
-                    Text('Senha do Aplicativo', style: TneFontStyle.h3Sec),
-                    SizedBox(height: Responsive.getSize(20)),
-                    Text(
-                      'Digite a senha que você criou anteriormente',
-                      style: TneFontStyle.bodyLargeSec,
-                    ),
-                    SizedBox(height: Responsive.getSize(30)),
-
-                    Consumer<LoginController>(
-                      builder: (context, controller, child) {
-                        return Form(
-                          key: controller.formKey,
-                          child: TneTextfield(
-                            label: 'Senha',
-
-                            controller: controller.passwordController,
-                            hint: 'Senha',
-
-                            formatter: [PasswordFormatter.maskFormatter],
-                            inputType: TextInputType.number,
-
-                            isObscureText: true,
-                            validator: (value) {
-                              return null;
-
-                              // return controller.validPassword();
-                            },
-                            onChanged: (value) {
-                              // controller.validPassword();
-                            },
+    return GestureDetector(
+      // Ao tocar em qualquer lugar, remove o foco
+      onTap: () {
+        FocusScope.of(context).unfocus(); // Método principal
+        // Alternativa: FocusScope.of(context).requestFocus(FocusNode());
+      },
+      behavior: HitTestBehavior.opaque, // Garante que toques em áreas vazias funcionem
+      
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+          
+            children: <Widget>[
+              TneBackButton(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                          
+                    children: [
+                      SizedBox(height: Responsive.getSize(30)),
+                      Text('Senha do Aplicativo', style: TneFontStyle.h3Sec),
+                      SizedBox(height: Responsive.getSize(20)),
+                      Text(
+                        'Digite a senha que você criou anteriormente',
+                        style: TneFontStyle.bodyLargeSec,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: Responsive.getSize(50)),
+                          
+                      Consumer<LoginController>(
+                        builder: (context, controller, child) {
+                          return Form(
+                            key: controller.formKey,
+                            child: TneTextfield(
+                              focusNode: _focusNode,
+                              label: 'Senha',
+                          
+                              controller: controller.passwordController,
+                              hint: 'Senha',
+                          
+                              formatter: [PasswordFormatter.maskFormatter],
+                              inputType: TextInputType.number,
+                              inputAction: TextInputAction.done,
+                          
+                              isObscureText: true,
+                              validator: (value) {
+                                return null;
+                          
+                                // return controller.validPassword();
+                              },
+                              onChanged: (value) {
+                                // controller.validPassword();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                          
+                      SizedBox(height: Responsive.getSize(10)),
+                      InkWell(
+                        onTap: () => _navigator.goto(TneRoutes.passwordRecover),
+                        child: Text(
+                          'Esqueceu a senha?',
+                          style: TneFontStyle.bodyLargeSec.copyWith(
+                            color: primaryColor,
+                            decoration: TextDecoration.underline,
                           ),
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: Responsive.getSize(10)),
-                    InkWell(
-                      onTap: () => _navigator.goto(TneRoutes.passwordRecover),
-                      child: Text(
-                        'Esqueceu a senha?',
-                        style: TneFontStyle.bodyLargeSec.copyWith(
-                          color: primaryColor,
-                          decoration: TextDecoration.underline,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 30, top: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Consumer<LoginController>(
-              builder: (context, controller, child) => TneRoundedButton(
-                width: 250,
-                height: 50,
-                child: controller.loading
+                     // Spacer(),
+                      SizedBox(height: Responsive.getSize(50)),
+                        
+                      Padding(
+                            padding: const EdgeInsets.only(bottom: 30, top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Consumer<LoginController>(
+                                  builder: (context, controller, child) => TneRoundedButton(
+                                    width: 250,
+                                    height: 50,
+                                    child: controller.loading
                     ? TneLoadingButton()
                     : Text(
                         "Confirmar",
@@ -118,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: secondaryColor,
                         ),
                       ),
-                onTap: () async {
+                                    onTap: () async {
                   if (controller.loading) return;
                   final notifyService = FirebaseNotificationService();
                   final token = await notifyService.getToken();
@@ -129,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                     credential: credential,
                     notifyToken: token!,
                   );
-
+                        
                   if (controller.hasError && context.mounted) {
                     await ErrorDialog.show(
                       'Atenção',
@@ -138,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                     );
                     return;
                   }
-
+                        
                   final credentialStatus =
                       credentialController.credentialStatus;
                   if (credentialStatus!.isWithoutFaceId) {
@@ -146,10 +157,18 @@ class _LoginPageState extends State<LoginPage> {
                     return;
                   }
                   _navigator.goto(TneRoutes.home, clearStack: true);
-                },
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

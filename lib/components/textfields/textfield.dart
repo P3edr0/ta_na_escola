@@ -28,6 +28,7 @@ class TneTextfield extends StatefulWidget {
     this.maxLines = 1,
     this.alignment = Alignment.center,
     this.padding = EdgeInsets.zero,
+    this.focusNode
   });
   final TextEditingController controller;
   final String hint;
@@ -43,6 +44,7 @@ class TneTextfield extends StatefulWidget {
   final double radius;
   final int? maxLength;
   final int? maxLines;
+  final FocusNode? focusNode;
   final List<TextInputFormatter>? formatter;
   final Function(String)? onChanged;
   final Function()? onEditingComplete;
@@ -120,6 +122,7 @@ class _TneTextfieldState extends State<TneTextfield> {
           ),
           width: double.infinity,
           child: TextFormField(
+            focusNode: widget.focusNode,
             style: TneFontStyle.bodyLargeBoldSec.copyWith(color: primaryColor),
 
             onEditingComplete: widget.onEditingComplete,

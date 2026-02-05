@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	
-	<!-- 1. PERMISSÃO DE CÂMERA (OBRIGATÓRIA para seu erro atual) -->
+	<!-- 1. PERMISSÃO DE CÂMERA (OBRIGATÓRIA) -->
 	<key>NSCameraUsageDescription</key>
 	<string>O Ta Na Escola usa a câmera para cadastrar o rosto dos pais e responsáveis, permitindo acesso seguro e automatizado durante reuniões escolares. As imagens são usadas exclusivamente para reconhecimento facial na portaria da escola.</string>
 	
@@ -72,5 +72,49 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	
+	<!-- 8. IMPEDE execução em iPad -->
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer> <!-- Apenas iPhone (1=iPhone, 2=iPad) -->
+	</array>
+
+	<!-- 9. Desabilita multitasking do iPad -->
+	<key>UIRequiresFullScreen</key>
+	<true/>
+
+	<!-- =============================================== -->
+	<!-- 10. PERMISSÕES E JUSTIFICATIVAS PARA INTERNET (NOVO) -->
+	<!-- =============================================== -->
+	
+	<!-- 10.1 Declaração de Segurança de Transporte (ATS) - OBRIGATÓRIA -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Configuração padrão e segura: permite apenas HTTPS -->
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<!-- Se você precisa fazer uma exceção para um domínio HTTP específico, 
+		adicione um bloco NSExceptionDomain aqui. Exemplo:
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>seuservidor.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+		-->
+	</dict>
+	
+	<!-- 10.2 Justificativa do Uso da Rede - OBRIGATÓRIA -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>O Ta Na Escola precisa se conectar à internet para sincronizar os dados de chegada e saída dos alunos, enviar notificações em tempo real para os pais e processar o cadastro facial com segurança.</string>
+	
+	<!-- 10.3 Justificativa para Acesso a Serviços de Rede Local (Bonjour) - Opcional, mas boa prática -->
+	<key>NSBonjourServices</key>
+	<array/>
+	<!-- Esta chave com array vazio é uma declaração explícita de que o app não usa serviços de rede local como Bonjour. -->
+
 </dict>
 </plist>

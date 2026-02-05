@@ -77,7 +77,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        top: Responsive.getSize(96),
+                        top: Responsive.getSize(130),
                         child: Container(
                           padding: EdgeInsetsDirectional.symmetric(
                             horizontal: Responsive.getSize(28),
@@ -106,10 +106,9 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
 
                       Positioned(
-                        bottom: Responsive.getSize(590),
                         left: 0,
                         right: 0,
-                        top: Responsive.getSize(-20),
+                        top: Responsive.getSize(100),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

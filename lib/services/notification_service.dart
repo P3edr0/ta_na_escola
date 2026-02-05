@@ -26,9 +26,17 @@ class FirebaseNotificationService {
   }
 
   Future<void> init() async {
-    final permission = await _firebaseMessaging.requestPermission();
+    final permission = await _firebaseMessaging.requestPermission(
+    alert: true,    // Mostrar alertas
+    badge: true,    // Atualizar ícone do app
+    sound: true,    // Reproduzir som
+    provisional: false, // Permissão "silenciosa" (iOS 12+). Use com cautela.
+  );
     if (permission.authorizationStatus == AuthorizationStatus.denied) {
       throw Exception("O usuário recusou receber notificações.");
+    }
+     if (Platform.isIOS) {
+      await Future.delayed(Duration(milliseconds: 500));
     }
 
     await getToken();
@@ -113,12 +121,27 @@ class FirebaseNotificationService {
 
   Future<String?> getToken() async {
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+   
 final isIos = Platform.isIOS;
 
   final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-
+String ?token = 'generic_token';
     if (isIos&& !iosInfo.isPhysicalDevice) return 'emulator_ios_token';
-    final token = await _firebaseMessaging.getToken();
+    if(isIos){
+      String ? apnsToken;
+      
+        apnsToken = await _firebaseMessaging.getAPNSToken();
+        
+        
+      if(apnsToken!=null){
+     token = await _firebaseMessaging.getToken();
+      }
+    }else{
+     token = await _firebaseMessaging.getToken();
+
+
+    }
     log(token.toString(), name: 'Token');
     return token;
   }
