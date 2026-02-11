@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    testCrashlytics();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final controller = context.read<HomeController>();
       final loginController = context.read<LoginController>();
@@ -47,6 +49,21 @@ class HomePageState extends State<HomePage> {
     });
   }
 
+void testCrashlytics() async {
+  // Testar em produção
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  
+  // Forçar um crash NÃO-FATAL (seguro)
+  FirebaseCrashlytics.instance.recordError(
+    Exception('TESTE: Validando dSYMs para App Store'),
+    StackTrace.current,
+    reason: 'Teste pré-submissão',
+    fatal: false, // IMPORTANTE: false para não crashar o app
+  );
+  
+  // Log adicional
+  FirebaseCrashlytics.instance.log('Teste submissão App Store: ${DateTime.now()}');
+}
   @override
   Widget build(BuildContext context) {
     print("Apenas testando");

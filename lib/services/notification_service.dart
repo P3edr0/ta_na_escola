@@ -129,6 +129,7 @@ final isIos = Platform.isIOS;
 String ?token = 'generic_token';
     if (isIos&& !iosInfo.isPhysicalDevice) return 'emulator_ios_token';
     if(isIos){
+      return 'ios_device_token';
       String ? apnsToken;
       
         apnsToken = await _firebaseMessaging.getAPNSToken();

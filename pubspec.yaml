@@ -1,7 +1,7 @@
 name: ta_na_escola
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.3.0+12
+version: 1.3.2+14
 
 environment:
   sdk: ^3.9.0
@@ -14,6 +14,7 @@ dependencies:
   dio: ^5.9.0
   feather_icons: ^1.2.0
   firebase_core: ^4.2.1
+  firebase_crashlytics: ^5.0.7
   firebase_messaging: ^16.0.4
   fl_chart: ^1.1.1
   flutter:

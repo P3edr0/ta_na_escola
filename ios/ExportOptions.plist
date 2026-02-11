@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>compileBitcode</key>
+    <false/> <!-- IMPORTANTE: FALSE para gerar dSYMs localmente -->
+    
+    <key>destination</key>
+    <string>export</string>
+    
+    <key>method</key>
+    <string>app-store</string> <!-- ou 'ad-hoc' para testes -->
+    
+    <key>signingStyle</key>
+    <string>automatic</string>
+    
+    <key>stripSwiftSymbols</key>
+    <true/>
+    
+    <key>teamID</key>
+    <string>H7RE2ESN24</string> <!-- Encontre no Apple Developer -->
+    
+    <key>thinning</key>
+    <string>&lt;none&gt;</string>
+    
+    <!-- Configurações para dSYMs -->
+    <key>uploadSymbols</key>
+    <true/> <!-- Tenta upload automático para Apple -->
+    
+    <key>uploadBitcode</key>
+    <false/>
+</dict>
+</plist>
